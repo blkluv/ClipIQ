@@ -15,6 +15,9 @@ import { Separator } from "@/components/ui/separator";
 import { useQueryData } from "@/hooks/useQueryData";
 import { getUserWorkspaces } from "../../../app/actions/workspace";
 import { WorkspaceProps } from "@/types/index.type";
+import Modal from "@/components/global/modal";
+import { PlusCircle } from "lucide-react";
+import Search from "../Search";
 
 type SidebarProps = {
   activeWorkspaceId: string;
@@ -84,6 +87,19 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
           </SelectGroup>
         </SelectContent>
       </Select>
+      <Modal 
+      trigger={ <span className="text-sm flex justify-center items-center bg-neutral-800/90 hover:bg-neutral-800/60 p-2 w-full rounded-md gap-2 text-neutral-300">
+        <PlusCircle
+        size={20}
+        className="text-neutral-800/90 fill-neutral-500"
+        />
+        <span className="text-xs font-semibold">Invite to Workspace </span>
+      </span>}
+        title="Invite others"
+        description="Invite others to your workspace."
+      >
+        <Search activeWorkspaceId={activeWorkspaceId}/>
+      </Modal>
     </div>
   );
 };

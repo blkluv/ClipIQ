@@ -8,28 +8,28 @@ import {
 } from "@/components/ui/dialog";
 import React from "react";
 
-type props={
-    trigger?:string
-    title?: string;
-    description?: string;
-
-}
-const modal = ({trigger,title,description}:props) => {
+type props = {
+  trigger: React.ReactNode;
+  children?: React.ReactNode;
+  title: string;
+  description: string;
+  className?: string;
+};
+const Modal = ({ trigger, children, title, description, className }: props) => {
   return (
     <div>
       <Dialog>
-        <DialogTrigger>{trigger}</DialogTrigger>
+        <DialogTrigger className={className}>{trigger}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>
-              {description}
-            </DialogDescription>
+            <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
+          {children}
         </DialogContent>
       </Dialog>
     </div>
   );
 };
 
-export default modal;
+export default Modal;
