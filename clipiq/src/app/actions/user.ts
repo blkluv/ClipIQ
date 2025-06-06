@@ -5,7 +5,7 @@ import client from '@/lib/prisma'
 export const onAuthenticated = async () => {
   try {
     const user = await currentUser();
-    console.log("Current user:", user);
+    // console.log("Current user:", user);
     if (!user) {
       return { status: 403 };
     }
@@ -62,5 +62,31 @@ export const onAuthenticated = async () => {
   } catch (error) {
     console.error("Error fetching current user:", error);
     return { status: 500, error: "Internal Server Error" };
+  }
+};
+
+export const getUserNotifications = async () => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 404 };
+
+    const notifications = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        notification: true,
+        _count: {
+          select: {
+            notification: true,
+          },
+        },
+      },
+    });
+    if (notifications && notifications.notification.length > 0)
+      return { status: 200, data: notifications };
+    return { status: 404, data: [] };
+  } catch {
+    return { status: 500, data: [] };
   }
 };

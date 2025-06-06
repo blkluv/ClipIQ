@@ -9,7 +9,7 @@ export default clerkMiddleware(async (auth, req) => {
     if (isProtectedRoutes(req)) {
         const { userId } = await auth();
         if (!userId) {
-            return Response.redirect('/sign-in');
+            return Response.redirect('http://localhost:3000/auth/sign-in');
         }
     }
 });

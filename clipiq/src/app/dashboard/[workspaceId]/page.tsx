@@ -1,16 +1,13 @@
-import React from "react";
+// app/dashboard/[workspaceId]/page.tsx
 
-interface DashboardPageProps {
-    params: { workspaceId: string };
+type PageParams = { params: { workspaceId: string } };
+
+export default async function DashboardHome({ params }: PageParams) {
+    const { workspaceId } =await params;
+  return (
+    <div>
+      <h2>Welcome to Workspace {workspaceId}</h2>
+      {/* whatever else */}
+    </div>
+  );
 }
-
-const DashboardPage: React.FC<DashboardPageProps> = ({ params }) => {
-    return (
-        <div>
-            <h1>Workspace Dashboard</h1>
-            <p>Workspace ID: {params.workspaceId}</p>
-        </div>
-    );
-};
-
-export default DashboardPage;

@@ -1,13 +1,14 @@
-import {ClerkProvider} from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
-import {Manrope} from 'next/font/google'
-import { ThemeProvider } from '@/components/theme';
-const manrope = Manrope({subsets: ['latin']})
+import { Manrope } from "next/font/google";
+import { ThemeProvider } from "@/components/theme";
+import { ReactQueryProvider } from "@/lib/reactquery";
+const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Video Sharing Platform",
-  description: "Share AI Powered Videos With Your Friends",
+  title: "ClipIQ - Video Sharing Platform",
+  description: "Share AI Powered Videos instantly with ClipIQ",
 };
 
 export default function RootLayout({
@@ -17,21 +18,18 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${manrope.className} bg-[#171717]`}
-      >
-      <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-          {children}
-      
-    </ThemeProvider>
-      </body>
-    </html>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${manrope.className} bg-[#171717]`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </ThemeProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
