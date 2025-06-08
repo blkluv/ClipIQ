@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../../../public/images/logo.jpeg';
 import Image from 'next/image';
+import { UserButton } from '@clerk/nextjs';
 
 interface NavDropdown {
   label: string;
@@ -70,9 +71,11 @@ export default function Navbar() {
     <nav className="w-full flex items-center justify-between px-4 md:px-8 py-4 bg-black/70 backdrop-blur fixed top-0 left-0 z-50" aria-label="Main navigation">
       <div className="flex items-center gap-2">
         {/* Placeholder logo */}
+         <UserButton/>
         <Image src={logo} alt="CentralAxis Logo" className="h-8 w-8" />
         <span className="text-2xl font-bold ml-2">CentralAxis</span>
       </div>
+       <UserButton/>
       <div className="hidden md:flex gap-8 text-base font-medium relative">
         {navDropdowns.map((nav, i) => (
           <div
@@ -102,6 +105,7 @@ export default function Navbar() {
                 </motion.div>
               )}
             </AnimatePresence>
+           
           </div>
         ))}
       </div>

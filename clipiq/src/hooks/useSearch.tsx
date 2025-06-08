@@ -18,7 +18,7 @@ export const useSearch = (key:string , type:string) => {
         lastName: string | null;
         email: string | null;
         image: string | null;
-    }[] | undefined>(undefined);
+    }[] | []>([]);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value); 
@@ -39,7 +39,9 @@ export const useSearch = (key:string , type:string) => {
         async ({queryKey}) =>{
             if(type==="users") {
                 const user= await getUsers(queryKey[1] as string); //server action
-            if (user.status === 200) setUsers(user.data);
+            if (user.status === 200) setUsers(user.data ?? []);
+            return user.data ?? [];
+            
         }},
         false //disabled by default, will be enabled when debounce is set
     );
@@ -49,7 +51,7 @@ export const useSearch = (key:string , type:string) => {
         if (debounce) {
             refetch(); 
         } else {
-            setUsers(undefined);
+            setUsers([]);
         }
     }, [debounce, refetch]);
 

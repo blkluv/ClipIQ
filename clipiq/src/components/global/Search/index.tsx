@@ -17,19 +17,19 @@ const Search = ({ activeWorkspaceId }: Props) => {
   );
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-5">
       <Input
         type="text"
         placeholder="Search..."
         onChange={onSearchChange}
         value={query}
-        className="w-full max-w-md bg-gray-800 text-white border border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:ring-opacity-50"
+        className=" bg-transparent text-white outline-none border  border-gray-600 focus:border-blue-500 focus:ring-blue-500 focus:ring-opacity-50"
       />
       {isFetching ? (
         <div className="flex flex-col gap-y-2">
           <Skeleton className="w-full h-8 rounded-xl" />
         </div>
-      ) : !users ? (
+      ) : users.length===0 ? (
         <p className="text-center text-sm text-[#a4a4a4]">No Users Found</p>
       ) : (
         <div>

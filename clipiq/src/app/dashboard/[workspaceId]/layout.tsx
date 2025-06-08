@@ -5,21 +5,26 @@ import {
   getWorkspaceFolders,
   verifyWorkspace,
 } from "@/app/actions/workspace";
+import GlobalHeader from "@/components/global/global-header";
 import Sidebar from "@/components/global/sidebar";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
 
 type Props = {
-    params: {workspaceId: string},
-    children: React.ReactNode
-}
-const DashboardLayout = async ({params, children}: Props) => {
-    const { workspaceId } =await params;
+  params: { workspaceId: string };
+  children: React.ReactNode;
+};
+const DashboardLayout = async ({ params, children }: Props) => {
+  const { workspaceId } = await params;
   const auth = await onAuthenticated();
   if (!auth.user?.workspace) return redirect(`/auth/sign-in`);
   if (!auth.user.workspace.length) return redirect("/auth/sign-in");
-  
+
   const hasAccess = await verifyWorkspace(workspaceId);
   if (hasAccess.status !== 200) {
     // If the “first workspace” is different than current workspaceId, redirect
@@ -27,7 +32,8 @@ const DashboardLayout = async ({params, children}: Props) => {
     if (firstWorkspaceId !== workspaceId) {
       return redirect(`/dashboard/${firstWorkspaceId}`);
     }
-}
+  }
+  if (!hasAccess.data?.workspace) return null;
 
   const queryClient = new QueryClient();
 
@@ -52,13 +58,13 @@ const DashboardLayout = async ({params, children}: Props) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-        <div className="flex h-screen w-screen">
-            <Sidebar activeWorkspaceId={workspaceId} />
-            <div className="w-full pt-28 p-6 overflow-y-scroll overflow-x-hidden">
-                {/* <GlobalHeader workspace={hasAccess.data.workspace} /> */}
-                <div className="mt-4">{children}</div>
-            </div>
+      <div className="flex h-screen w-screen">
+        <Sidebar activeWorkspaceId={workspaceId} />
+        <div className="w-full pt-28 p-6 overflow-y-scroll overflow-x-hidden">
+          <GlobalHeader workspace={hasAccess.data.workspace} />
+          <div className="mt-4">{children}</div>
         </div>
+      </div>
     </HydrationBoundary>
   );
 };
