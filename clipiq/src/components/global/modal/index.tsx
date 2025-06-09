@@ -19,7 +19,7 @@ const Modal = ({ trigger, children, title, description, className }: props) => {
   return (
     <div>
       <Dialog>
-        <DialogTrigger className={className}>{trigger}</DialogTrigger>
+        <DialogTrigger asChild className={className}>{trigger}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>

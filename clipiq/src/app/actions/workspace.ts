@@ -127,3 +127,44 @@ export const getUserWorkspaces = async () => {
   }
 };
 
+export const CreateWorkSpaceAction = async (name: string) => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 404 };
+    const userExist = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      include: {
+        subscription: {
+          select: {
+            plan: true,
+          },
+        },
+      },
+    });
+    if (userExist?.subscription?.plan === "PRO") {
+      const workspace = await client.user.update({
+                where: {
+                    clerkid: user.id
+                },
+                data: {
+                    workspace: {
+                        create: {
+                            name,
+                            type: 'PUBLIC'
+                        }
+                    }
+                }
+            })
+            if(workspace) return {status: 401, data: 'Workspace Created'}
+            return {status: 401, data: 'You are not authorized to create a workspace'}
+    }
+    
+  } catch (error) {
+    console.error("Error creating workspace:", error);
+    return { status: 500, error: "Internal Server Error" };
+  }
+};
+
+

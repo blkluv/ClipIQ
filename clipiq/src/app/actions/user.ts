@@ -1,6 +1,7 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
 import client from "@/lib/prisma";
+import CreateWorkSpace from "../../components/dashboard/create-workspace/index";
 
 export const onAuthenticated = async () => {
   try {
@@ -137,3 +138,4 @@ export const getUsers = async (query: string) => {
     return { status: 500, data: [] };
   }
 };
+

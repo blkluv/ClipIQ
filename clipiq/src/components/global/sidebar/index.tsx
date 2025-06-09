@@ -198,14 +198,14 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
   return (
     <div className="full">
       <InfoBar/>
-      <div className="md:hidden"></div>
+      <div className="md:hidden h-16"></div>
       <Sheet>
         <SheetTrigger
         asChild
         className="ml-4 z-50"
         >
           <Button variant={"ghost"} 
-          className="mt-4 md:hidden z-50">
+          className="mt-4 md:hidden relative z-50">
             <Menu/>
           </Button>
         </SheetTrigger>
