@@ -1,6 +1,8 @@
 "use server";
 import client from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+import { WorkSpace } from "../../generated/prisma/index";
+import Folder from "../../components/dashboard/Folders/folder";
 
 export const verifyWorkspace = async (workspaceId: string) => {
   try {
@@ -24,26 +26,6 @@ export const verifyWorkspace = async (workspaceId: string) => {
   }
 };
 
-export const getWorkspaceFolders = async (workSpaceId: string) => {
-  try {
-    const folders = await client.folder.findMany({
-      where: {
-        workSpaceId,
-      },
-      include: {
-        _count: {
-          select: { videos: true },
-        },
-      },
-    });
-    if (folders && folders.length > 0) {
-      return { status: 200, data: folders };
-    }
-    return { status: 404, data: [] };
-  } catch {
-    return { status: 403, data: [] };
-  }
-};
 
 export const getUserVideos = async (workSpaceId: string) => {
   try {
@@ -79,6 +61,27 @@ export const getUserVideos = async (workSpaceId: string) => {
     });
     if (videos && videos.length > 0) {
       return { status: 200, data: videos };
+    }
+    return { status: 404, data: [] };
+  } catch {
+    return { status: 403, data: [] };
+  }
+};
+
+export const getWorkspaceFolders = async (workSpaceId: string) => {
+  try {
+    const folders = await client.folder.findMany({
+      where: {
+        workSpaceId,
+      },
+      include: {
+        _count: {
+          select: { videos: true },
+        },
+      },
+    });
+    if (folders && folders.length > 0) {
+      return { status: 200, data: folders };
     }
     return { status: 404, data: [] };
   } catch {
@@ -145,26 +148,66 @@ export const CreateWorkSpaceAction = async (name: string) => {
     });
     if (userExist?.subscription?.plan === "PRO") {
       const workspace = await client.user.update({
-                where: {
-                    clerkid: user.id
-                },
-                data: {
-                    workspace: {
-                        create: {
-                            name,
-                            type: 'PUBLIC'
-                        }
-                    }
-                }
-            })
-            if(workspace) return {status: 401, data: 'Workspace Created'}
-            return {status: 401, data: 'You are not authorized to create a workspace'}
+        where: {
+          clerkid: user.id,
+        },
+        data: {
+          workspace: {
+            create: {
+              name,
+              type: "PUBLIC",
+            },
+          },
+        },
+      });
+      if (workspace) return { status: 401, data: "Workspace Created" };
+      return {
+        status: 401,
+        data: "You are not authorized to create a workspace",
+      };
     }
-    
   } catch (error) {
     console.error("Error creating workspace:", error);
     return { status: 500, error: "Internal Server Error" };
   }
 };
 
+export const CreateFolderAction = async (workspaceId: string, name: string) => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 400 };
 
+    const isNewFolder = await client.workSpace.update({
+      where: {
+        id: workspaceId,
+      },
+      data: {
+        folders: {
+          create: { name: name },
+        },
+      },
+    });
+    if (isNewFolder) {
+      return { status: 200, message: "New Folder Created" };
+    }
+  } catch (error) {
+    return {status: 500, message: "Oops! Something Went Wrong"}
+  }
+};
+
+export const renameFolderAction=async(name:string,id:string)=>{
+  try {
+    const folder=await client.folder.update({
+      where:{
+        id:id
+      },
+      data:{
+        name:name
+      }
+    })
+    if(folder) return {status:200 , data:"Renamed successfully"}
+    return {status:400 ,data:"Rename unsuccessful"}
+  } catch (error) {
+    return {status:500 , data:"something went wrong"}
+  }
+}

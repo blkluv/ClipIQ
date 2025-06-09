@@ -1,12 +1,24 @@
+"use client"
 import { cn } from "@/lib/utils";
 import { ArrowRight, FolderArchive } from "lucide-react";
 import React from "react";
 import Folder from "./folder";
+import { useQueryData } from "@/hooks/useQueryData";
+import { getWorkspaceFolders } from "@/app/actions/workspace";
+import { FolderProps } from "@/types/index.type";
 type props={
     workspaceId: string;
 }
 const Folders = ({workspaceId}:props) => {
-    // console.log("Workspace ID:", workspaceId);
+
+  const {data ,isFetched, isPending}=useQueryData(
+    ["workspace-folders"],
+     async() =>  getWorkspaceFolders(workspaceId)
+  )
+
+  const {data:folders}= data as FolderProps
+  // if(isFetched) console.log(folders)
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -22,12 +34,11 @@ const Folders = ({workspaceId}:props) => {
         </div>
       </div>
       <section className={cn('flex items-center gap-4 overflow-x-auto w-full',"scrollbar-hidden")}>
-        <Folder name="title" id="1"/>
-        <Folder name="title" id="1"/>
-        <Folder name="title" id="1"/>
-        <Folder name="title" id="1"/>
-        <Folder name="title" id="1"/>
-        <Folder name="title" id="1"/>
+        {
+          folders.map((folder)=>(
+            <Folder key={folder.id} name={folder.name} id={folder.id} count={folder._count.videos} />
+          ))
+        }
       </section>
     </div>
   );

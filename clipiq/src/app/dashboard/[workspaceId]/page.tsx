@@ -29,7 +29,7 @@ export default async function DashboardHome({ params }: PageParams) {
           </TabsList>
           <div className="flex gap-3">
             <CreateWorkSpace/>
-            <CreateFolders/>
+            <CreateFolders workspaceId={workspaceId}/>
           </div>
         </div>
         <section className="py-9">

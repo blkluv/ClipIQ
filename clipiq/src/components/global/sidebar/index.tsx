@@ -51,11 +51,11 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
   );
 
   const menuitems = menuItems(activeWorkspaceId);
+  const { data: workspace } = data as WorkspaceProps;
 
   //left -renaming data to workspace and destructuring
   //eight- typing data as WorkspaceProps to ensure type safety and ignoring status part
   //as getUserWorkspaces returns an object with status and data properties
-  const { data: workspace } = data as WorkspaceProps;
   //now workspace has 3 properties: subscription, workspace, members
 
   const SideBarSection = (
