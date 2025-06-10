@@ -27,13 +27,13 @@ export const verifyWorkspace = async (workspaceId: string) => {
 };
 
 
-export const getUserVideos = async (workSpaceId: string) => {
+export const getUserVideos = async (id: string) => {
   try {
     const user = await currentUser();
     if (!user) return { status: 404 };
     const videos = await client.video.findMany({
       where: {
-        OR: [{ workSpaceId: workSpaceId }, { folderId: workSpaceId }],
+        OR: [{ workSpaceId: id }, { folderId: id }],
       },
       select: {
         id: true,
@@ -210,4 +210,28 @@ export const renameFolderAction=async(name:string,id:string)=>{
   } catch (error) {
     return {status:500 , data:"something went wrong"}
   }
+}
+
+export const getFolderInfo=async(folderId:string)=>{
+  try {
+        const folder = await client.folder.findUnique({
+            where: {
+                id: folderId
+            },
+            select: {
+                name: true,
+                _count: {
+                    select: {
+                        videos: true
+                    }
+                }
+            }
+        })
+        if(folder) {
+            return {status: 200, data: folder}
+        }
+        return {status: 400, data: null};
+    } catch {
+        return {status: 500, data: null}
+    }
 }

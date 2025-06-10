@@ -69,10 +69,11 @@ const Folder = ({ name, id, optimistic, count }: props) => {
               onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                 updateName(e);
               }}
-              className="border-none text-base w-full outline-none text-neutral-300 bg-transparent p-0"
+              className="border-none outline-none  text-base w-full  text-neutral-300 bg-transparent p-0"
             />
           ) : (
             <p
+            suppressHydrationWarning
               onDoubleClick={handleDoubleClick}
               onClick={(e) => {
                 e.stopPropagation();

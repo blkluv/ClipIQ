@@ -30,7 +30,7 @@ export type NotificationProps = {
     }
 }
 
-export type FolderProps = {
+export type FoldersProps = {
     status: number,
     data: ({
         _count: {
@@ -44,15 +44,15 @@ export type FolderProps = {
     })[]
 }
 
-// export type FolderProps = {
-//     status: number,
-//     data: {
-//         name: string,
-//         _count: {
-//             videos: number
-//         }
-//     }
-// }
+export type FolderProps = {
+    status: number,
+    data: {
+        name: string,
+        _count: {
+            videos: number
+        }
+    }
+}
 
 export type VideosProps = {
     status: number,

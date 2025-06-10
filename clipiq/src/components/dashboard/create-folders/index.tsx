@@ -1,6 +1,7 @@
 import CreateFolderForm from '@/components/forms/CreateFolder'
 import Modal from '@/components/global/modal'
 import { Button } from '@/components/ui/button'
+import { FolderPlus } from 'lucide-react'
 import React from 'react'
 
 type props={
@@ -15,7 +16,8 @@ const CreateFolders = ({workspaceId}:props) => {
       <Modal title="Create Folder"
       description='Create a new folder to organize your videos.'
       trigger={
-        <Button variant={"ghost"} className="bg-[#252525] text-white px-4 py-2 rounded-full">
+        <Button variant={"ghost"} className="bg-[#252525] text-neutral-400 px-4 py-2 rounded-full">
+          <FolderPlus className='font-bold'/>{" "}
           Create Folder
         </Button>
       }>
