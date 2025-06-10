@@ -12,7 +12,7 @@ type props = {
   };
 };
 const FolderID = async ({ params }: props) => {
-  const { workspaceId, folderId } = params;
+  const { workspaceId, folderId } = await params;
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({

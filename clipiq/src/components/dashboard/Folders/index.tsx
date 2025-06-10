@@ -17,7 +17,9 @@ const Folders = ({ workspaceId }: props) => {
 
   const { latestVariables } = useMutationDataState(["create-folder"]);
 
-  const { status, data: folders } = data as FoldersProps;
+  // const { data: folders } = data as FoldersProps;
+  const foldersData = (data as FoldersProps) || { status: 0, data: [] };
+const { status, data: folders } = foldersData;
 
   return (
     <div className="flex flex-col gap-4">

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Manrope } from "next/font/google";
 import { ThemeProvider } from "@/components/theme";
 import { ReactQueryProvider } from "@/lib/reactquery";
+import { Toaster } from "sonner";
 const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,7 +27,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <ReactQueryProvider>
+              {children}
+              <Toaster/>
+            </ReactQueryProvider>
           </ThemeProvider>
         </body>
       </html>
