@@ -18,7 +18,12 @@ const CreateFolders = ({workspaceId}:props) => {
       trigger={
         <Button variant={"ghost"} className="bg-[#252525] text-neutral-400 px-4 py-2 rounded-full">
           <FolderPlus className='font-bold'/>{" "}
-          Create Folder
+          <span className="hidden md:inline">
+            Create Folder
+            </span>
+            <span className="inline md:hidden">
+            Folder
+            </span>
         </Button>
       }>
         <CreateFolderForm WorkSpaceId={workspaceId}/>

@@ -51,9 +51,9 @@ export default function HeroSection(): React.ReactElement {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
           className="bg-[#7c3aed] text-white px-24 py-4 font-semibold text-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
-          href="/auth/sign-up"
+          href="/auth/sign-in"
         >
-          Sign-Up
+          Sign-In
         </motion.a>
         </div>
       </div>

@@ -30,7 +30,7 @@ const useZodForm = (
 
   return {
     register,
-    handleSubmit: handleSubmit(onSubmit),
+    handleSubmit: onSubmit,
     watch,
     errors,
     reset

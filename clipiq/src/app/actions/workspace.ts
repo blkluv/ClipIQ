@@ -131,8 +131,13 @@ export const getUserWorkspaces = async () => {
 
 export const CreateWorkSpaceAction = async (name: string) => {
   try {
-    const user = await currentUser();
-    if (!user) return { status: 404 };
+  const user = await currentUser();
+  if (!user) return { status: 404 };
+  console.log("-----------------------------")
+    console.log("-----------------------------")
+    console.error("reachingggggggg");
+    console.log("-----------------------------")
+    console.log("-----------------------------")
     const userExist = await client.user.findUnique({
       where: {
         clerkid: user.id,
@@ -159,15 +164,24 @@ export const CreateWorkSpaceAction = async (name: string) => {
           },
         },
       });
-      if (workspace) return { status: 401, data: "Workspace Created" };
-      return {
-        status: 401,
-        data: "You are not authorized to create a workspace",
-      };
-    }
+    if (workspace) return { status: 401, data: "Workspace Created" };
+    return {
+      status: 401,
+      data: "You are not authorized to create a workspace",
+    };
+  }
+  console.log("-----------------------------")
+console.log("-----------------------------")
+console.error("Error creating workspace:");
+console.log("-----------------------------")
+console.log("-----------------------------")
   } catch (error) {
+    console.log("-----------------------------")
+    console.log("-----------------------------")
     console.error("Error creating workspace:", error);
-    return { status: 500, error: "Internal Server Error" };
+    console.log("-----------------------------")
+    console.log("-----------------------------")
+    return { status: 500, data: "Internal Server Error" };
   }
 };
 
@@ -241,18 +255,19 @@ export const moveVideoAction = async (
   folderId: string
 ) => {
   try {
-    const videomove = await client.video.update({
+    console.log("videoId",videoId,"workSpaceId", workSpaceId,"folderId", folderId);
+    const location = await client.video.update({
       where: {
         id: videoId,
       },
       data: {
-        folderId,
+        folderId: folderId || null,
         workSpaceId,
       },
     });
-    if (videoId) return { status: 201, data: videomove };
-    return {status:400 , data:"error"}
-  } catch (error) {
-    return {status:500 , data:error}
+    if (location) return { status: 200, data: "folder changed successfully" };
+    return { status: 404, data: "workspace/folder not found" };
+  } catch {
+    return { status: 500, data: "Oops! something went wrong" };
   }
 };

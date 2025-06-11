@@ -42,6 +42,7 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
   const handleWorkspaceChange = (value: string) => {
     console.log("Selected workspace:", value);
     // Navigate to the selected workspace
+    //WIP- rectify - bounces back due to layout.tsx verifyworkspaceaccess(hasaccess)
     router.push(`/dashboard/${value}`);
   };
 

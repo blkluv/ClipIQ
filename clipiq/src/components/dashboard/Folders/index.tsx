@@ -6,6 +6,7 @@ import Folder from "./folder";
 import { useQueryData } from "@/hooks/useQueryData";
 import { getWorkspaceFolders } from "@/app/actions/workspace";
 import {  FoldersProps } from "@/types/index.type";
+
 import { useMutationDataState } from "@/hooks/useMutataionData";
 type props = {
   workspaceId: string;
@@ -62,6 +63,7 @@ const { status, data: folders } = foldersData;
           </>
         )}
       </section>
+      
     </div>
   );
 };
