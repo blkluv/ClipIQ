@@ -16,18 +16,14 @@ import useMutataionData from './useMutataionData'
 export const useMoveVideos = (videoId: string, initialWorkspace: string) => {
   const queryClient = useQueryClient()
 
-  //
-  // 1️⃣ Fetch all workspaces once
-  //
+  // Fetching workspaces once
   const { data, isPending: isWorkspacesLoading } = useQueryData(
     ['user-workspaces'],
     () => getUserWorkspaces()
   )
   const {data:workspaces} = data as WorkspaceProps;
 
-  //
-  // 2️⃣ Set up Zod‑powered form, seeded with the initial workspace
-  //
+//  Mutation to move the video
   const { mutate, isPending } = useMutataionData({
     mutationKey: ['change-video-location'],
     mutationFn: (data: { workspace_id: string; folder_id: string }) =>
@@ -44,6 +40,8 @@ export const useMoveVideos = (videoId: string, initialWorkspace: string) => {
     },
     queryKey: 'workspace-folders',
   })
+
+  // Set up Zod‑powered form, seeded with the initial workspace
   const {
     register,
     watch,
@@ -59,12 +57,12 @@ export const useMoveVideos = (videoId: string, initialWorkspace: string) => {
     }
   )
 
-  // 3️⃣ Watch the selected workspace_id so we can refetch folders
+  //Watch the selected workspace_id so we can refetch folders
   const selectedWorkspace = watch('workspace_id')
 
-  //
-  // 4️⃣ Fetch folders for the currently selected workspace
-  //
+
+  // Fetch folders for the currently selected workspace
+  
   const {
     data: folderdata,
     isFetching,
@@ -76,13 +74,6 @@ export const useMoveVideos = (videoId: string, initialWorkspace: string) => {
   )
  const folders = (folderdata as FoldersProps)?.data ?? [];
 
-  //
-  // 5️⃣ Mutation to move the video
-  //
-
-  //
-  // 6️⃣ Return everything the component needs
-  //
   return {
     // form controls
     register,

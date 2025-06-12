@@ -139,3 +139,74 @@ export const getUsers = async (query: string) => {
   }
 };
 
+export const addCommentAndReply = async (
+  videoId: string,
+  comment: string,
+  userid: string,
+  parentCommentId?: string | undefined
+) => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 400, data: "Signin to add comments" };
+
+
+    if (parentCommentId) {
+      const reply = await client.comment.update({
+        where: {
+          id: parentCommentId,
+        },
+        data: {
+          reply: {
+            create: {
+              comment: comment,
+              videoId: videoId,
+              userId: userid,
+            },
+          },
+        },
+      });
+      if (reply) return { status: 200, data: "reply posted" };
+    } else {
+      const addcomment = await client.video.update({
+        where: {
+          id: videoId,
+        },
+        data: {
+          Comment: {
+            create: {
+              comment: comment,
+              userId: userid,
+            },
+          },
+        },
+      });
+      if (addcomment) return { status: 200, data: "comment added successfully" };
+    }
+    return { status: 400, data: "comment posted" };
+  } catch (error) {
+    return { status: 400, data: "Something went wrong!" };
+  }
+};
+
+export const getUserProfile=async()=>{
+  try {
+    const user=await currentUser();
+    if(!user) return {status:400}
+
+    const userdetails=await client.user.findUnique({
+      where:{
+        clerkid:user.id
+      },
+      select:{
+        firstName:true,
+        lastName:true,
+        id:true,
+        image:true,
+      }
+    })
+    if(userdetails) return {status:400 , data:userdetails}
+    return {status:400,data:"failed"}
+  } catch (error) {
+    return {status:500,data:"error"}
+  }
+}

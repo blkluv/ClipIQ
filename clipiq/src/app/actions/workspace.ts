@@ -1,8 +1,6 @@
 "use server";
 import client from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { WorkSpace } from "../../generated/prisma/index";
-import Folder from "../../components/dashboard/Folders/folder";
 
 export const verifyWorkspace = async (workspaceId: string) => {
   try {
@@ -19,7 +17,9 @@ export const verifyWorkspace = async (workspaceId: string) => {
         ],
       },
     });
-    return { status: 400, data: { workspace: hasAccesstoworkspace } };
+    if (hasAccesstoworkspace)
+      return { status: 200, data: { workspace: hasAccesstoworkspace } };
+    return { status: 400, data: { workspace: null } };
   } catch (error) {
     console.error("Error verifying workspace:", error);
     return { status: 500, data: { workspace: null } };
@@ -131,13 +131,13 @@ export const getUserWorkspaces = async () => {
 
 export const CreateWorkSpaceAction = async (name: string) => {
   try {
-  const user = await currentUser();
-  if (!user) return { status: 404 };
-  console.log("-----------------------------")
-    console.log("-----------------------------")
+    const user = await currentUser();
+    if (!user) return { status: 404 };
+    console.log("-----------------------------");
+    console.log("-----------------------------");
     console.error("reachingggggggg");
-    console.log("-----------------------------")
-    console.log("-----------------------------")
+    console.log("-----------------------------");
+    console.log("-----------------------------");
     const userExist = await client.user.findUnique({
       where: {
         clerkid: user.id,
@@ -164,32 +164,29 @@ export const CreateWorkSpaceAction = async (name: string) => {
           },
         },
       });
-    if (workspace) return { status: 401, data: "Workspace Created" };
-    return {
-      status: 401,
-      data: "You are not authorized to create a workspace",
-    };
-  }
-  console.log("-----------------------------")
-console.log("-----------------------------")
-console.error("Error creating workspace:");
-console.log("-----------------------------")
-console.log("-----------------------------")
+      if (workspace) return { status: 401, data: "Workspace Created" };
+      return {
+        status: 401,
+        data: "You are not authorized to create a workspace",
+      };
+    }
+    console.log("-----------------------------");
+    console.log("-----------------------------");
+    console.error("Error creating workspace:");
+    console.log("-----------------------------");
+    console.log("-----------------------------");
   } catch (error) {
-    console.log("-----------------------------")
-    console.log("-----------------------------")
+    console.log("-----------------------------");
+    console.log("-----------------------------");
     console.error("Error creating workspace:", error);
-    console.log("-----------------------------")
-    console.log("-----------------------------")
+    console.log("-----------------------------");
+    console.log("-----------------------------");
     return { status: 500, data: "Internal Server Error" };
   }
 };
 
 export const CreateFolderAction = async (workspaceId: string, name: string) => {
   try {
-    const user = await currentUser();
-    if (!user) return { status: 400 };
-
     const isNewFolder = await client.workSpace.update({
       where: {
         id: workspaceId,
@@ -255,7 +252,7 @@ export const moveVideoAction = async (
   folderId: string
 ) => {
   try {
-    console.log("videoId",videoId,"workSpaceId", workSpaceId,"folderId", folderId);
+    // console.log("videoId",videoId,"workSpaceId", workSpaceId,"folderId", folderId);
     const location = await client.video.update({
       where: {
         id: videoId,
@@ -272,43 +269,108 @@ export const moveVideoAction = async (
   }
 };
 
-export const getVideoDetails=async(videoId:string)=>{
+export const getVideoDetails = async (videoId: string) => {
   try {
     const user = await currentUser();
-        if(!user) return {status: 404}
-        const video = await client.video.findUnique({
-            where: {
-                id: videoId
+    if (!user) return { status: 404 };
+    const video = await client.video.findUnique({
+      where: {
+        id: videoId,
+      },
+      select: {
+        title: true,
+        createdAt: true,
+        source: true,
+        processing: true,
+        description: true,
+        views: true,
+        summary: true,
+        User: {
+          select: {
+            firstName: true,
+            lastName: true,
+            image: true,
+            clerkid: true,
+            trial: true,
+            subscription: {
+              select: {
+                plan: true,
+              },
             },
-            select: {
-                title: true,
-                createdAt: true,
-                source: true,
-                processing: true,
-                description: true,
-                views: true,
-                summary: true,
-                User: {
-                    select: {
-                        firstName: true,
-                        lastName: true,
-                        image: true,
-                        clerkid: true,
-                        trial: true,
-                        subscription: {
-                            select: {
-                                plan: true
-                            }
-                        }
-                    }
-                }
-            }
-        })
-        if(video) {
-            return {status: 200, data: video, author: user.id === video.User?.clerkid ? true : false}
-        }
-        return {status: 404, data: null}
+          },
+        },
+      },
+    });
+    if (video) {
+      return {
+        status: 200,
+        data: video,
+        author: user.id === video.User?.clerkid ? true : false,
+      };
+    }
+    return { status: 404, data: null };
   } catch {
-    return {status: 500, data: null}
+    return { status: 500, data: null };
   }
-}
+};
+
+// export const getVideoComments=async(videoId:string)=>{
+//   try {
+//     const comments=await client.video.findUnique({
+//       where:{
+//         id:videoId
+//       },
+//       select:{
+//         Comment:true
+//       }
+//     })
+//     if(comments) return {status:200 , data:comments}
+//     return {status:404,data:[]};
+//   } catch (error) {
+//     return {status:500,data:"server error"}
+//   }
+// }
+
+// export const getCommentReply=async(commentId:string)=>{
+//   try {
+//     const replies=await client.comment.findUnique({
+//       where:{
+//         id:commentId
+//       },
+//       select:{
+//         reply:true
+//       }
+//     })
+//     if(replies) return {status:200 , data:replies}
+//     return {status:404,data:[]};
+//   } catch (error) {
+//     return {status:500,data:"server error"}
+//   }
+// }
+
+export const getVideoComments = async (Id: string) => {
+  try {
+    const comments = await client.comment.findMany({
+      where: {
+        videoId: Id,
+        // OR: [{ videoId: Id }, { parentCommentId: Id }],
+        parentCommentId: null,
+      },
+      include: {
+        reply: {
+          include: {
+            User: true,
+          },
+        },
+        User: true,
+      },
+    });
+    // console.log('--------------------------------');
+    // console.log('Prisma fetched comments for video', Id, comments);
+    // console.log('--------------------------------');
+
+    return { status: 200, data: comments };
+  } catch {
+    return { status: 400 };
+  }
+};

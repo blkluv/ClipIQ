@@ -158,3 +158,13 @@ export type VideoDataProps = {
         videoId: string | null
     }[]
   }
+
+export type UserProfileProps = {
+    status: number,
+    data: {
+        firstName:string,
+        lastName:string,
+        id:string,
+        image:string,
+    }
+}

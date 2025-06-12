@@ -103,9 +103,7 @@ const VideoPreview = ({ videoId }: props) => {
               plan={video.User?.subscription?.plan}
             />
             <VideoTranscript transcript={"hbdchbdkhbhcbwhcb"} />
-            <Activities
-              
-            />
+            <Activities  videoId={videoId} />
           </TabMenu>
         </div>
       </div>

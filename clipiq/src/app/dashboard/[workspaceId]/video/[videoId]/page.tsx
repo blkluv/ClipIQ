@@ -1,4 +1,5 @@
-import { getVideoDetails } from "@/app/actions/workspace";
+import { getUserProfile } from "@/app/actions/user";
+import { getVideoComments, getVideoDetails } from "@/app/actions/workspace";
 import VideoPreview from "@/components/dashboard/videos/video-preview";
 import {
   dehydrate,
@@ -16,7 +17,15 @@ const page = async ({ params }: props) => {
   const client = new QueryClient();
   await client.prefetchQuery({
     queryKey: ["video-data"],
-    queryFn: async () => getVideoDetails(videoId),
+    queryFn: () => getVideoDetails(videoId),
+  });
+  await client.prefetchQuery({
+    queryKey: ["user-profile"],
+    queryFn: () => getUserProfile(),
+  });
+  await client.prefetchQuery({
+    queryKey: ["video-comments"],
+    queryFn: () => getVideoComments(videoId),
   });
 
   return <HydrationBoundary state={dehydrate(client)}>

@@ -27,7 +27,7 @@ const Folder = ({ name, id, optimistic, count }: props) => {
   const { mutate, isPending } = useMutataionData({
     mutationKey: ["rename-folder"],
     mutationFn: async (data: { name: string }) => {
-      renameFolderAction(data.name, id);
+      return renameFolderAction(data.name, id);
     },
     queryKey: "workspace-folders",
     onSuccess:() => setonRename(false),

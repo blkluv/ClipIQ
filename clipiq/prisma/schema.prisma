@@ -4,6 +4,7 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -39,8 +40,8 @@ model Comment {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   comment   String
   reply     Comment[] @relation("reply")
-  Comment   Comment?  @relation("reply", fields: [commentId], references: [id])
-  commentId String?   @db.Uuid
+  parentComment   Comment?  @relation("reply", fields: [parentCommentId], references: [id])
+  parentCommentId String?   @db.Uuid
   User      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String?   @db.Uuid
   Video     Video?    @relation(fields: [videoId], references: [id], onDelete: Cascade)
