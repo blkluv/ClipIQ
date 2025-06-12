@@ -271,3 +271,44 @@ export const moveVideoAction = async (
     return { status: 500, data: "Oops! something went wrong" };
   }
 };
+
+export const getVideoDetails=async(videoId:string)=>{
+  try {
+    const user = await currentUser();
+        if(!user) return {status: 404}
+        const video = await client.video.findUnique({
+            where: {
+                id: videoId
+            },
+            select: {
+                title: true,
+                createdAt: true,
+                source: true,
+                processing: true,
+                description: true,
+                views: true,
+                summary: true,
+                User: {
+                    select: {
+                        firstName: true,
+                        lastName: true,
+                        image: true,
+                        clerkid: true,
+                        trial: true,
+                        subscription: {
+                            select: {
+                                plan: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        if(video) {
+            return {status: 200, data: video, author: user.id === video.User?.clerkid ? true : false}
+        }
+        return {status: 404, data: null}
+  } catch {
+    return {status: 500, data: null}
+  }
+}

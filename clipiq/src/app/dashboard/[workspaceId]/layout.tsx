@@ -61,6 +61,7 @@ const DashboardLayout = async ({ params, children }: Props) => {
       <div className="flex h-screen w-screen">
         <Sidebar activeWorkspaceId={workspaceId} />
         <div className="w-full pt-28 p-6 overflow-y-scroll overflow-x-hidden">
+          {/* <div style={{ background: "red" }}>TEST HEADER</div> */}
           <GlobalHeader workspace={hasAccess.data.workspace} />
           <div className="mt-4">{children}</div>
         </div>
