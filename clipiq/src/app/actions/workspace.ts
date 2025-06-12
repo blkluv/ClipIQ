@@ -364,6 +364,7 @@ export const getVideoComments = async (Id: string) => {
         },
         User: true,
       },
+       orderBy: { createdAt: 'desc' }
     });
     // console.log('--------------------------------');
     // console.log('Prisma fetched comments for video', Id, comments);
