@@ -6,6 +6,8 @@ import React from "react";
 import Loader from "../loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
+import useMutataionData from "@/hooks/useMutataionData";
+import { inviteMemberAction } from "@/app/actions/user";
 
 type Props = {
   activeWorkspaceId: string;
@@ -15,6 +17,16 @@ const Search = ({ activeWorkspaceId }: Props) => {
     "search-users",
     "users"
   );
+
+  const { mutate, isPending } = useMutataionData({
+    mutationKey: ["invite-memeber"],
+    mutationFn: (data: { receiverId: string; emailRecevier: string }) =>
+      inviteMemberAction(
+        activeWorkspaceId,
+        data.receiverId,
+        data.emailRecevier
+      ),
+  });
 
   return (
     <div className="flex flex-col gap-y-5">
@@ -29,7 +41,7 @@ const Search = ({ activeWorkspaceId }: Props) => {
         <div className="flex flex-col gap-y-2">
           <Skeleton className="w-full h-8 rounded-xl" />
         </div>
-      ) : users.length===0 ? (
+      ) : users.length === 0 ? (
         <p className="text-center text-sm text-[#a4a4a4]">No Users Found</p>
       ) : (
         <div>
@@ -55,12 +67,12 @@ const Search = ({ activeWorkspaceId }: Props) => {
               <div className="flex-1 flex justify-end items-center">
                 <Button
                   onClick={() => {
-                    //   mutate({receiverId: user.id, email: user.email})
+                    mutate({ receiverId: user.id, emailRecevier: user.email });
                   }}
                   variant={"default"}
                   className="w-5/12 font-bold"
                 >
-                  <Loader state={true} color={"#000"}></Loader>
+                  <Loader state={isPending} color={"#000"}></Loader>
                 </Button>
               </div>
             </div>

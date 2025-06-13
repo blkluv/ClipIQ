@@ -27,7 +27,7 @@ model User {
   workspace    WorkSpace[]
   videos       Video[]
   subscription Subscription?
-  members      Member[]
+  members      Member[]            //this user is itself a memeber in follwing workspaces 
   notification Notification[]
   sender       Invite[]       @relation("sender")
   reciever     Invite[]       @relation("reciever")
@@ -36,6 +36,11 @@ model User {
   comment      Comment[]
 }
 
+// In User.members[] ➝ you’re saying:
+// “Which workspaces is this user part of?”
+
+// In Workspace.members[] ➝ you’re saying:
+// “Which users are in this workspace?”
 model Comment {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   comment   String
@@ -78,7 +83,7 @@ model WorkSpace {
   createdAt DateTime @default(now())
   folders   Folder[]
   videos    Video[]
-  members   Member[]
+  members   Member[]       
   invite    Invite[]
 }
 

@@ -1,7 +1,31 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
 import client from "@/lib/prisma";
-import CreateWorkSpace from "../../components/dashboard/create-workspace/index";
+import nodemailer from "nodemailer";
+
+export const sendMail = (
+  to: string,
+  subject: string,
+  text: string,
+  html?: string
+) => {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.MAILER_EMAIL,
+      pass: process.env.MAILER_PASSWORD,
+    },
+  });
+  const mailOptions = {
+    to,
+    subject,
+    text,
+    html,
+  };
+  return { transporter, mailOptions };
+};
 
 export const onAuthenticated = async () => {
   try {
@@ -149,7 +173,6 @@ export const addCommentAndReply = async (
     const user = await currentUser();
     if (!user) return { status: 400, data: "Signin to add comments" };
 
-
     if (parentCommentId) {
       const reply = await client.comment.update({
         where: {
@@ -180,7 +203,8 @@ export const addCommentAndReply = async (
           },
         },
       });
-      if (addcomment) return { status: 200, data: "comment added successfully" };
+      if (addcomment)
+        return { status: 200, data: "comment added successfully" };
     }
     return { status: 400, data: "comment posted" };
   } catch (error) {
@@ -188,49 +212,305 @@ export const addCommentAndReply = async (
   }
 };
 
-export const getUserProfile=async()=>{
+export const getUserProfile = async () => {
   try {
-    const user=await currentUser();
-    if(!user) return {status:400}
+    const user = await currentUser();
+    if (!user) return { status: 400 };
 
-    const userdetails=await client.user.findUnique({
-      where:{
-        clerkid:user.id
+    const userdetails = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
       },
-      select:{
-        firstName:true,
-        lastName:true,
-        id:true,
-        image:true,
-      }
-    })
-    if(userdetails) return {status:400 , data:userdetails}
-    return {status:400,data:"failed"}
+      select: {
+        firstName: true,
+        lastName: true,
+        id: true,
+        image: true,
+      },
+    });
+    if (userdetails) return { status: 400, data: userdetails };
+    return { status: 400, data: "failed" };
   } catch (error) {
-    return {status:500,data:"error"}
+    return { status: 500, data: "error" };
   }
-}
+};
 
 export const getPaymentInfo = async () => {
-    try {
-        const user = await currentUser();
-        if(!user) return {status: 404}
-        const payment = await client.user.findUnique({
-            where: {
-                clerkid: user.id
-            },
-            select: {
-                subscription: {
-                    select: {
-                        plan: true
-                    }
-                }
-            }
-        })
-        if(payment){
-            return {status: 200, data: payment}
-        }
-    } catch {
-        return {status: 400}
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 404 };
+    const payment = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        subscription: {
+          select: {
+            plan: true,
+          },
+        },
+      },
+    });
+    if (payment) {
+      return { status: 200, data: payment };
     }
-}
+  } catch {
+    return { status: 400 };
+  }
+};
+
+export const inviteMemberAction = async (
+  workspaceId: string,
+  recevierId: string,
+  emailRecevier: string
+) => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 404 };
+
+    //getting sender info
+    const sender = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+      },
+    });
+
+    //getting receiver info
+    const recevier = await client.user.findUnique({
+      where: {
+        id: recevierId,
+      },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (sender?.id && recevier) {
+      const workspace = await client.workSpace.findUnique({
+        where: {
+          id: workspaceId,
+        },
+        select: {
+          name: true,
+          members: true,
+        },
+      });
+      if (workspace) {
+        const alreadyMember = await client.workSpace.findUnique({
+          where: {
+            id: workspaceId,
+            members: {
+              some: {
+                userId: recevierId,
+              },
+            },
+          },
+        });
+
+        if (alreadyMember)
+          return {
+            status: 400,
+            data: "Selected user is already a memeber of the workspace",
+          };
+
+        //creating invite
+        const invite = await client.invite.create({
+          data: {
+            senderId: sender.id,
+            recieverId: recevierId,
+            content: `You have been invited by ${sender.firstName} ${sender.lastName}(${sender.email}) to join the workspace "${workspace.name}"`,
+            workSpaceId: workspaceId,
+            accepted: false,
+          },
+          select: {
+            id: true,
+          },
+        });
+        //creating notifications on sender
+        const notify = await client.user.update({
+          where: {
+            id: sender.id,
+          },
+          data: {
+            notification: {
+              create: {
+                content: `${recevier.firstName} ${recevier.lastName} is invited to join ${workspace.name} workspace.`,
+              },
+            },
+          },
+        });
+
+        if (invite) {
+          const { transporter, mailOptions } = sendMail(
+            emailRecevier,
+            "You got an invitation",
+            "You are invited to join ${workspace.name} Workspace, click accept to confirm",
+            `<!-- Container -->
+<div style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; text-align: center;">
+  <!-- Logo + App Name -->
+  <div style="margin-bottom: 30px;">
+    <img
+      src=""
+      alt="ClipIQ Logo"
+      width="48"
+      height="48"
+      style="vertical-align: middle;"
+    />
+    <span style="font-size: 24px; font-weight: bold; color: #333; vertical-align: middle; margin-left: 8px;">
+      ClipIQ
+    </span>
+  </div>
+
+  <!-- Invitation Message -->
+  <p style="font-size: 16px; color: #555; line-height: 1.5; margin-bottom: 30px;">
+    You’ve been invited to join a workspace on ClipIQ. Click the button below to accept your invitation and get started!
+  </p>
+
+  <!-- Button (table for email compatibility) -->
+  <table
+    role="presentation"
+    cellpadding="0"
+    cellspacing="0"
+    style="margin: 0 auto 40px; border-collapse: separate !important; border-radius: 6px; overflow: hidden;"
+  >
+    <tr>
+      <td
+        style="
+          background-color: #0070f3;
+          padding: 12px 24px;
+          text-align: center;
+        "
+      >
+        <a
+          href="${process.env.NEXT_PUBLIC_HOST_URL}/invite/${invite.id}"
+          style="
+            font-size: 16px;
+            color: #ffffff;
+            text-decoration: none;
+            display: inline-block;
+          "
+        >
+          Accept Invitation
+        </a>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Fallback Link -->
+  <p style="font-size: 14px; color: #999; line-height: 1.4;">
+    If the button above doesn’t work, copy and paste this link into your browser:<br/>
+    <a
+      href="${process.env.NEXT_PUBLIC_HOST_URL}/invite/${invite.id}"
+      style="color: #0070f3; word-break: break-all;"
+    >
+      ${process.env.NEXT_PUBLIC_HOST_URL}/invite/${invite.id}
+    </a>
+  </p>
+</div>
+`
+          );
+
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.log("🔴", error.message);
+            } else {
+              console.log("✅ Email Sent", info);
+            }
+          });
+          return { status: 200, data: "Invite sent" };
+        }
+        return { status: 400, data: "invitation failed" };
+      }
+      return { status: 404, data: "workspace not found" };
+    }
+    return { status: 404, data: "recipient not found" };
+  } catch (error) {
+    console.log(error);
+    return { status: 500, data: "Oops! something went wrong" };
+  }
+};
+
+export const acceptInviteAction = async (inviteId: string) => {
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 400, data: "Signin to accept invite" };
+
+    const recevier = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const invite = await client.invite.findUnique({
+      where: {
+        id: inviteId,
+      },
+      select: {
+        recieverId: true,
+        workSpaceId: true,
+        WorkSpace: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (invite) {
+      if (invite.recieverId !== recevier?.id)
+        return { status: 401, data: "Not authorised to accept this invite" };
+
+      const membersTransaction = await client.$transaction([
+        client.invite.update({
+          where: {
+            id: inviteId,
+          },
+          data: {
+            accepted: true,
+          },
+        }),
+        client.user.update({
+          where: {
+            clerkid: user.id,
+          },
+          data: {
+            members: {
+              create: {
+                workSpaceId: invite.workSpaceId,
+              },
+            },
+          },
+        }),
+      ]);
+
+      if (membersTransaction) {
+        await client.user.update({
+          where: {
+            id: recevier.id,
+          },
+          data: {
+            notification: {
+              create: {
+                content: `You have joined ${invite.WorkSpace?.name}`,
+              },
+            },
+          },
+        });
+        return { status: 200 , data:"Invitation Accepted" };
+      }
+    }
+    return {status:404, data:"Invitation does not exist"}
+  } catch (error) {
+    return {status:500 , data:"Oops! Something went wrong"}
+  }
+};
