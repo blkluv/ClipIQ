@@ -5,7 +5,7 @@ import { useSearch } from "@/hooks/useSearch";
 import React from "react";
 import Loader from "../loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "lucide-react";
+import { Mail, User } from "lucide-react";
 import useMutataionData from "@/hooks/useMutataionData";
 import { inviteMemberAction } from "@/app/actions/user";
 
@@ -26,6 +26,7 @@ const Search = ({ activeWorkspaceId }: Props) => {
         data.receiverId,
         data.emailRecevier
       ),
+      queryKey:"user-notifications"
   });
 
   return (
@@ -72,7 +73,9 @@ const Search = ({ activeWorkspaceId }: Props) => {
                   variant={"default"}
                   className="w-5/12 font-bold"
                 >
-                  <Loader state={isPending} color={"#000"}></Loader>
+                  <Loader state={isPending} color={"#000"}> 
+                    <Mail/>
+                  </Loader>
                 </Button>
               </div>
             </div>

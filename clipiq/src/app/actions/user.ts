@@ -3,21 +3,21 @@ import { currentUser } from "@clerk/nextjs/server";
 import client from "@/lib/prisma";
 import nodemailer from "nodemailer";
 
-export const sendMail = (
+export const sendMail = async(
   to: string,
   subject: string,
   text: string,
   html?: string
 ) => {
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
+    host: process.env.MAIL_HOST,
+    port: Number(process.env.MAIL_PORT),
     secure: true,
     auth: {
-      user: process.env.MAILER_EMAIL,
-      pass: process.env.MAILER_PASSWORD,
+      user: process.env.MAIL_USER_EMAIL_ID,
+      pass: process.env.MAIL_PASSWORD,
     },
-  });
+  } as nodemailer.TransportOptions);
   const mailOptions = {
     to,
     subject,
@@ -95,19 +95,39 @@ export const getUserNotifications = async () => {
     const user = await currentUser();
     if (!user) return { status: 404 };
 
-    const notifications = await client.user.findUnique({
-      where: {
-        clerkid: user.id,
-      },
-      select: {
-        notification: true,
-        _count: {
-          select: {
-            notification: true,
-          },
-        },
-      },
-    });
+    // const notifications = await client.user.findUnique({
+    //   where: {
+    //     clerkid: user.id,
+    //   },
+    //   select: {
+    //     notification: {
+    //       orderBy: {
+    //         createdAt: "desc",
+    //       },
+    //     },
+    //     _count: {
+    //       select: {
+    //         notification: true,
+    //       },
+    //     },
+    //   },
+    // });
+     const notifications = await client.user.findUnique({
+            where: {
+                clerkid: user.id
+            },
+            select: {
+                notification: true,
+                _count: {
+                    select: {
+                        notification: true
+                    }
+                }
+            }
+        })
+    // console.log("----------------------------")
+    // console.log(notifications)
+    // console.log("----------------------------")
     if (notifications && notifications.notification.length > 0)
       return { status: 200, data: notifications };
     return { status: 404, data: [] };
@@ -289,6 +309,7 @@ export const inviteMemberAction = async (
       select: {
         firstName: true,
         lastName: true,
+        email:true
       },
     });
 
@@ -341,14 +362,14 @@ export const inviteMemberAction = async (
           data: {
             notification: {
               create: {
-                content: `${recevier.firstName} ${recevier.lastName} is invited to join ${workspace.name} workspace.`,
+                content: `${recevier.firstName} ${recevier.lastName}(${recevier.email}) is invited to join ${workspace.name} workspace.`,
               },
             },
           },
         });
 
         if (invite) {
-          const { transporter, mailOptions } = sendMail(
+          const { transporter, mailOptions } = await sendMail(
             emailRecevier,
             "You got an invitation",
             "You are invited to join ${workspace.name} Workspace, click accept to confirm",
@@ -417,7 +438,7 @@ export const inviteMemberAction = async (
 `
           );
 
-          transporter.sendMail(mailOptions, (error, info) => {
+          transporter.sendMail(mailOptions, (error: Error | null, info: nodemailer.SentMessageInfo) => {
             if (error) {
               console.log("🔴", error.message);
             } else {
@@ -440,7 +461,7 @@ export const inviteMemberAction = async (
 export const acceptInviteAction = async (inviteId: string) => {
   try {
     const user = await currentUser();
-    if (!user) return { status: 400, data: "Signin to accept invite" };
+    if (!user) return { status: 404, data: "Signin to accept invite" };
 
     const recevier = await client.user.findUnique({
       where: {
@@ -456,6 +477,7 @@ export const acceptInviteAction = async (inviteId: string) => {
         id: inviteId,
       },
       select: {
+        accepted:true,
         recieverId: true,
         workSpaceId: true,
         WorkSpace: {
@@ -469,6 +491,8 @@ export const acceptInviteAction = async (inviteId: string) => {
     if (invite) {
       if (invite.recieverId !== recevier?.id)
         return { status: 401, data: "Not authorised to accept this invite" };
+
+      if(invite.accepted===true) return { status:402 , data:"Already a member"}
 
       const membersTransaction = await client.$transaction([
         client.invite.update({
@@ -509,7 +533,7 @@ export const acceptInviteAction = async (inviteId: string) => {
         return { status: 200 , data:"Invitation Accepted" };
       }
     }
-    return {status:404, data:"Invitation does not exist"}
+    return {status:400, data:"Invitation does not exist"}
   } catch (error) {
     return {status:500 , data:"Oops! Something went wrong"}
   }
