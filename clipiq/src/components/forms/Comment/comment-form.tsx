@@ -12,10 +12,11 @@ import { getUserProfile } from "@/app/actions/user";
 import { UserProfileProps } from "@/types/index.type";
 type props = {
   parentCommentId?: string;
+  isReply?:boolean
   videoId: string;
   close?: () => void
 };
-const CommentForm = ({ parentCommentId, videoId }: props) => {
+const CommentForm = ({ parentCommentId, videoId ,isReply }: props) => {
   const { data: user } = useQueryData(["user-profile"], () => getUserProfile());
   const { data: userdata } = user as UserProfileProps;
   const { isPending, register, handleSubmit, errors } = useComment({
@@ -31,8 +32,8 @@ const CommentForm = ({ parentCommentId, videoId }: props) => {
         <Input
           id="comment"
           type="text"
-          placeholder={`reply to ${userdata.firstName}`}
-          className="bg-transparent border-themeGray text-themeTextGray"
+          placeholder={`${isReply?"reply":"comment"} to ${userdata.firstName}`}
+          className="bg-transparent border border-neutral-600 text-themeTextGray"
           {...register("comment")}
         />
         <ErrorMessage

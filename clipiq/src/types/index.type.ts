@@ -126,8 +126,8 @@ export type VideoDataProps = {
     User: {
         id: string,
         email: string,
-        firstname: string | null ,
-        lastname: string | null,
+        firstName: string | null ,
+        lastName: string | null,
         createdAt: Date,
         clerkId: string,
         image: string | null,
@@ -141,8 +141,8 @@ export type VideoDataProps = {
         User: {
             id: string,
             email: string,
-            firstname: string | null,
-            lastname: string | null,
+            firstName: string | null,
+            lastName: string | null,
             createdAt: Date,
             clerkId: string,
             image: string | null,

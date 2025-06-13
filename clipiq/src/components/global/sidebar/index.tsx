@@ -94,7 +94,7 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
             <SelectLabel>Member in</SelectLabel>
             <Separator />
             {isFetched &&
-              workspace.members.length > 0 &&
+              workspace?.members?.length > 0 &&
               workspace?.members?.map((member) => (
                 <SelectItem
                   key={member.WorkSpace.id}
@@ -154,7 +154,7 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
       )}
       <nav className="w-full">
         <ul className="h-fit overflow-auto overflow-x-hidden">
-          {workspace?.workspace.length > 0 &&
+          {workspace?.workspace?.length > 0 &&
             workspace?.workspace?.map(
               (workspace) =>
                 workspace.type !== "PERSONAL" && (
@@ -167,7 +167,7 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
                   />
                 )
             )}
-          {workspace.members.length > 0 &&
+          {workspace?.members?.length > 0 &&
             workspace?.members?.map((workspace) => (
               <SidebarItems
                 key={workspace.WorkSpace.id}

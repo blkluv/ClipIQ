@@ -25,6 +25,7 @@ const CommentCard = ({
   isReply,
   createdAt,
 }: props) => {
+  console.log(author);
   const [onReply, setOnReply] = useState<boolean>(false);
   const daysAgo = Math.floor(
     (new Date().getTime() - createdAt.getTime()) / (24 * 60 * 60 * 1000)
@@ -34,7 +35,7 @@ const CommentCard = ({
       className={cn(
         isReply
           ? "bg-[#1D1D1D] pl-10 border-none shadow-none"
-          : "border-[1px] bg-[#1D1D1D] p-5 shadow-none",
+          : "border border-neutral-600 bg-[#1D1D1D] p-5 pb-2 shadow-none",
         "relative"
       )}
     >
@@ -59,7 +60,7 @@ const CommentCard = ({
         <p className="text-[#BDBDBD]">{comment}</p>
       </div>
       {!isReply && (
-        <div className="flex justify-end mt-3 ">
+        <div className="flex justify-end mt-1 ">
           {!onReply ? (
             <Button
               onClick={() => setOnReply(true)}
@@ -72,6 +73,7 @@ const CommentCard = ({
               close={() => setOnReply(false)}
               videoId={videoId}
               parentCommentId={commentId}
+              isReply
             //   author={author.firstname + ' ' + author.lastname}
             />
           )}
@@ -89,8 +91,8 @@ const CommentCard = ({
               key={r.id}
               author={{
                 image: r.User?.image || "",
-                firstname: r.User?.firstname || "",
-                lastname: r.User?.lastname || "",
+                firstname: r.User?.firstName || "",
+                lastname: r.User?.lastName || "",
               }}
               createdAt={r.createdAt}
             />

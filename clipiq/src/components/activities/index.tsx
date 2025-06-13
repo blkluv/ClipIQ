@@ -16,12 +16,13 @@ const Activities = ({ videoId }: props) => {
   )
 
   const {data:comments} =data as VideoCommentProps;
+  console.log(comments)
 
 
   return (
     <TabsContent
       value="Activity"
-      className="rounded-xl flex flex-col bg-[#1D1D1D]  gap-y-5"
+      className="rounded-xl flex flex-col p-4 bg-[#1D1D1D]  gap-y-2  " //max-h-100 scrollbar-hidden overflow-y-auto
     >
       <CommentForm videoId={videoId}/>
       {comments?.map((comment) => (
@@ -30,8 +31,8 @@ const Activities = ({ videoId }: props) => {
             comment={comment.comment}
             author={{
               image: comment.User?.image || "",
-              firstname: comment.User?.firstname || "",
-              lastname: comment.User?.lastname || ""
+              firstname: comment.User?.firstName || "",
+              lastname: comment.User?.lastName || ""
             }}
             videoId={comment.videoId || ""}
             commentId={comment.id}
