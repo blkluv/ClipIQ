@@ -2,7 +2,7 @@
 import { getUserNotifications } from "@/app/actions/user";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useQueryData } from "@/hooks/useQueryData";
-import { Bell, User } from "lucide-react";
+import { Bell } from "lucide-react";
 import React from "react";
 
 const Notifications = () => {
@@ -29,9 +29,6 @@ const Notifications = () => {
     );
   };
 
-  if (isFetching) {
-    return <p>Loading…</p>;
-  }
   if (status !== 200) {
     return (
       <div className="flex justify-center items-center h-full w-full">
