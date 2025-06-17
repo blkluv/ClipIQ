@@ -375,3 +375,25 @@ export const getVideoComments = async (Id: string) => {
     return { status: 400 };
   }
 };
+
+
+export const editVideoInfo = async (
+  videoId: string,
+  title: string,
+  description: string
+) => {
+  try {
+    console.log("reach action ---------")
+    const video = await client.video.update({
+      where: { id: videoId },
+      data: {
+        title,
+        description,
+      },
+    });
+    if (video) return { status: 200, data: "Video successfully updated" };
+    return { status: 404, data: "Video not found" };
+  } catch (error) {
+    return { status: 400 };
+  }
+};

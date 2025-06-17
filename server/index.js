@@ -9,7 +9,8 @@ const axios = require("axios");
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
 const { AssemblyAI } = require("assemblyai");
-const { GoogleGenAI } = require("@google/genai");
+// const { GoogleGenAI } = require("@google/genai");
+const { chatSession } = require("./lib/gemini");
 
 const app = express();
 app.use(cors());
@@ -19,9 +20,9 @@ const server = http.createServer(app);
 const aai = new AssemblyAI({
   apiKey: process.env.ASSEMBLYAI_API_KEY,
 });
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+
+const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
+const params = { key: process.env.GEMINI_API_KEY };
 
 // // Set axios default headers
 // axios.defaults.headers.common["origin"] = 'https://opal-express-gc8f.onrender.com';
@@ -136,30 +137,34 @@ io.on("connection", (socket) => {
               console.log("Transcript:", transcript.text);
 
               if (transcript) {
-                const generationConfig = {
-                  temperature: 1,
-                  topP: 0.95,
-                  topK: 40,
-                  maxOutputTokens: 8192,
-                  responseMimeType: "text/plain",
+                const payload = {
+                  contents: [
+                    {
+                      parts: [
+                        {
+                          text: `You are going to generate a title and a nice description using the speech to text transcription provided -transcription(${transcript}) and then return it in the strictly  json format with "title" and "description" `,
+                        },
+                      ],
+                    },
+                  ],
                 };
-                const model = "gemini-2.0-flash";
-                const contents = [
-                  {
-                    role: "system",
-                    parts: [
-                      {
-                        text: `You are going to generate a title and a nice description using the speech to text transcription provided transcription(${transcript.text}) and then return it in the json format as {"title":<the title you gave>,"summaray":<the description you created>}`,
-                      },
-                    ],
-                  },
-                ];
-                const response = await ai.models.generateContent({
-                  model,
-                  config,
-                  contents,
-                });
-                console.log(response);
+
+                try {
+                  const response = await axios.post(url, payload, {
+                    params,
+                    headers: { "Content-Type": "application/json" },
+                  });
+                  const content =
+                    response.data.candidates[0].content.parts[0].text;
+                  console.log("💬 Gemini Output:", content);
+                  // return response.data;
+                } catch (err) {
+                  console.error(
+                    "❌ Gemini error:",
+                    err.response?.data || err.message
+                  );
+                  throw err;
+                }
               }
             }
             // Complete processing

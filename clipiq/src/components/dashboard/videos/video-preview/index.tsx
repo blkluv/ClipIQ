@@ -12,6 +12,7 @@ import TabMenu from "./tabs";
 import AITools from "./tools/ai-tools";
 import VideoTranscript from "./tools/video-transcipt";
 import Activities from "@/components/activities";
+import EditVideo from "./edit-video";
 
 type props = {
   videoId: string;
@@ -30,7 +31,7 @@ const VideoPreview = ({ videoId }: props) => {
         <div>
           <div className="flex gap-x-5 items-start justify-between ">
             <h2 className="text-white text-4xl font-bold">{video.title}</h2>
-            {/* {author ? (
+            {author ? (
               <EditVideo
                 videoId={videoId}
                 title={video.title as string}
@@ -38,7 +39,7 @@ const VideoPreview = ({ videoId }: props) => {
               />
             ) : (
               <></>
-            )} */}
+            )}
           </div>
           <span className="flex gap-x-3 mt-2">
             <p className="text-[#9D9D9D] capitalize">
@@ -56,13 +57,13 @@ const VideoPreview = ({ videoId }: props) => {
           controls
         >
           <source
-            src={`${process.env.NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL}/${video.source}#1`}
+            src={video.source}
           />
         </video>
         <div className="flex flex-col text-2xl gap-y-4">
           <div className="flex gap-x-5 items-center justify-between">
             <p className="text-[#BDBDBD] text-semibold">Description</p>
-            {/* {author ? (
+            {author ? (
               <EditVideo
                 videoId={videoId}
                 title={video.title as string}
@@ -70,7 +71,7 @@ const VideoPreview = ({ videoId }: props) => {
               />
             ) : (
               <></>
-            )} */}
+            )}
           </div>
           <p className="text-[#9D9D9D] text-lg text-medium">
             {video.description}
