@@ -1,4 +1,4 @@
-
+"use client";
 import useZodForm from "./useZodForm";
 import { editVideoInfoSchema } from "@/components/forms/edit-video/schema";
 import useMutataionData from "./useMutataionData";
@@ -13,7 +13,7 @@ export const useEditVideo = (
     mutationKey: ["edit-video"],
     mutationFn: (data: { title: string; description: string }) =>
       editVideoInfo(videoId, data.title, data.description),
-    queryKey: "preview-video",
+    queryKey: "video-data",
   });
 
   const { errors, handleSubmit, register } = useZodForm(

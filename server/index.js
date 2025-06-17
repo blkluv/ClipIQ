@@ -11,6 +11,7 @@ const path = require("path");
 const { AssemblyAI } = require("assemblyai");
 // const { GoogleGenAI } = require("@google/genai");
 const { chatSession } = require("./lib/gemini");
+const { title } = require("process");
 
 const app = express();
 app.use(cors());
@@ -170,7 +171,12 @@ io.on("connection", (socket) => {
             // Complete processing
             const stopProcessing = await axios.post(
               `${process.env.NEXT_API_HOST}recording/${data.userId}/complete`,
-              { filename: result.secure_url }
+              {
+                filename: result.secure_url,
+                transcript: transcript,
+                title: title,
+                description: description,
+              }
             );
 
             if (stopProcessing.data.status !== 200) {

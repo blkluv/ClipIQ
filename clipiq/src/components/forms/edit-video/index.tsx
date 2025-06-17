@@ -1,4 +1,4 @@
-// import FormGenerator from '@/components/global/form-generator'
+"use client";
 import Loader from "@/components/global/loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,13 +20,9 @@ const EditVideoForm = ({ description, title, videoId }: Props) => {
     title,
     description
   );
-  const submithandler=()=>{
-    console.log(".....reached....")
-    handleSubmit
-  }
 
   return (
-    <form onSubmit={submithandler} className="flex flex-col gap-y-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-y-5">
       
       <Label
         className="flex flex-col gap-2 text-[#9D9D9D]"
@@ -41,7 +37,7 @@ const EditVideoForm = ({ description, title, videoId }: Props) => {
         />
         <ErrorMessage
           errors={errors}
-          name={title}
+          name="title"
           render={({ message }) => (
             <p className="text-red-400 mt-2">
               {message === "Required" ? "" : message}
@@ -60,7 +56,7 @@ const EditVideoForm = ({ description, title, videoId }: Props) => {
         />
         <ErrorMessage
           errors={errors}
-          name={description}
+          name="description"
           render={({ message }) => (
             <p className="text-red-400 mt-2">
               {message === "Required" ? "" : message}

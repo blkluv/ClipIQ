@@ -16,6 +16,9 @@ export async function POST(
             },
             data: {
                 processing: false,
+                summary:body.transcript,
+                title:body.title,
+                description:body.description
             },
         })
 
