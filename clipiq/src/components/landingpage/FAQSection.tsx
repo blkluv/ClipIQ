@@ -8,24 +8,24 @@ interface Faq {
 
 export const faqs: Faq[] = [
   {
-    q: 'Are these solutions applicable to me if I am operating a co-location?',
-    a: 'Yes! Our solutions are designed to help co-location operators manage their infrastructure more efficiently and effectively.',
+    q: 'What does the Free plan include?',
+    a: 'Up to 5 minutes per recording , Basic auto‑transcription (raw text),Private workspaces only (no public sharing).',
   },
   {
-    q: 'How do you ensure data privacy and security?',
-    a: 'We adhere to strict data privacy regulations and implement robust security measures to protect sensitive information.',
+    q: 'How do I record my screen and webcam at the same time?',
+    a: 'In the desktop app’s settings, select your screen source and your webcam under “Video Sources.” Hit Start Recording, and both feeds will merge into a single clip.',
   },
   {
-    q: 'How does pricing work?',
-    a: 'Depending on your requirements, we offer flexible pricing models.',
+    q: 'Can I reorganize folders after uploading videos?',
+    a: 'Absolutely. Just double‑click any folder name to rename it, or drag & drop a video from one folder to another at any time.',
   },
   {
-    q: 'Do you provide ongoing support and maintenance for your solutions?',
-    a: 'Absolutely - we offer comprehensive support and maintenance as well as customization for your needs.',
+    q: 'What additional features do I get with Pro?',
+    a: 'Unlimited recording length,AI‑powered smart titles, descriptions, and tagging,Ability to create public workspaces and invite collaborators,Ability to create public workspaces and invite collaborators, Priority processing & support.',
   },
   {
-    q: 'How do I get started?',
-    a: 'Set up a demo and we\'ll guide you through our offerings and start a trial!',
+    q: 'Can I upgrade mid‑stream?',
+    a: 'Yes—simply upgrade your plan in the web app. Your desktop client will immediately unlock Pro limits (you may need to restart recording if you hit the 5 min Free cap).',
   },
 ];
 

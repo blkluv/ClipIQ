@@ -63,7 +63,7 @@ export const getUserVideos = async (id: string) => {
     }
     return { status: 404, data: [] };
   } catch {
-    return { status: 403, data: [] };
+    return { status: 500, data: [] };
   }
 };
 
@@ -133,11 +133,11 @@ export const CreateWorkSpaceAction = async (name: string) => {
   try {
     const user = await currentUser();
     if (!user) return { status: 404 };
-    console.log("-----------------------------");
-    console.log("-----------------------------");
-    console.error("reachingggggggg");
-    console.log("-----------------------------");
-    console.log("-----------------------------");
+    // console.log("-----------------------------");
+    // console.log("-----------------------------");
+    // console.error("reachingggggggg");
+    // console.log("-----------------------------");
+    // console.log("-----------------------------");
     const userExist = await client.user.findUnique({
       where: {
         clerkid: user.id,
@@ -170,17 +170,12 @@ export const CreateWorkSpaceAction = async (name: string) => {
         data: "You are not authorized to create a workspace",
       };
     }
-    console.log("-----------------------------");
-    console.log("-----------------------------");
-    console.error("Error creating workspace:");
-    console.log("-----------------------------");
-    console.log("-----------------------------");
+    // console.log("-----------------------------");
+    // console.log("-----------------------------");
+    // console.error("Error creating workspace:");
+    // console.log("-----------------------------");
+    // console.log("-----------------------------");
   } catch (error) {
-    console.log("-----------------------------");
-    console.log("-----------------------------");
-    console.error("Error creating workspace:", error);
-    console.log("-----------------------------");
-    console.log("-----------------------------");
     return { status: 500, data: "Internal Server Error" };
   }
 };

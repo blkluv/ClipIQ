@@ -27,7 +27,7 @@ const FolderID = async ({ params }: props) => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <FolderInfo folderId={folderId}/>
-      <Videos workspaceId={workspaceId} folderId={folderId}/>
+      <Videos workspaceId={workspaceId} folderId={folderId} queryKey="folder-videos"/>
     </HydrationBoundary>
   )
 };

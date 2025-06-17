@@ -19,7 +19,7 @@ type props = {
 };
 const VideoPreview = ({ videoId }: props) => {
   const { data } = useQueryData(["video-data"], () => getVideoDetails(videoId));
-  const { data: video, status, author } = data as VideoDataProps;
+  const { data: video, author } = data as VideoDataProps;
   console.log(video);
 
   const daysAgo = Math.floor(

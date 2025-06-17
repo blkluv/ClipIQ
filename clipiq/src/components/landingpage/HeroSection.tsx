@@ -25,9 +25,9 @@ export default function HeroSection(): React.ReactElement {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="max-w-7xl mx-auto text-6xl md:text-7xl font-bold mb-4 text-gray-200 tracking-tight text-center"
+          className="max-w-7xl mx-auto text-6xl md:text-7xl font-bold mb-4 text-gray-200 tracking-tight text-center flex items-center justify-content"
         >
-          Data Center Management Software
+          <span>ClipIQ:</span><span className='text-4xl'> Your All‑In‑One AI‑Powered Video Collaboration Suite</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -35,7 +35,7 @@ export default function HeroSection(): React.ReactElement {
           transition={{ delay: 0.2, duration: 0.7 }}
           className="max-w-2xl mx-auto text-xl md:text-xl text-gray-400 mb-2 text-center"
         >
-          Increase uptime, reduce costs, automate operations, and stay compliant.
+          Capture, Collaborate, Create—Effortlessly. Record Smarter. Share Faster.
         </motion.p>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -43,7 +43,7 @@ export default function HeroSection(): React.ReactElement {
           transition={{ delay: 0.4, duration: 0.7 }}
           className="max-w-2xl mx-auto text-lg md:text-xl text-gray-500 mb-10 text-center"
         >
-          Built for colocations, data centers, and cloud providers.
+          “Seamless Recording Meets Intelligent Collaboration.”
         </motion.p>
         </div>
         <div className='border border-gray-800 md:px-114 md:pb-14 md:pt-0'>

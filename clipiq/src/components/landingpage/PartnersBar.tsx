@@ -31,7 +31,7 @@ export default function PartnersBar() {
     <section className="w-full bg-black py-12 flex flex-col items-center">
       <div className="w-full max-w-8xl mx-auto px-4">
         <div className="text-gray-400 text-center mb-10 text-lg md:text-xl font-normal">
-          Seamless integrations with any data center hardware
+          Your Workspace, Your Way—Powered by ClipIQ.
         </div>
         <div className="relative w-full overflow-hidden">
         <motion.div
@@ -61,10 +61,10 @@ export default function PartnersBar() {
         </motion.div>
       </div>
         <div className="flex flex-col items-center mt-14">
-          <span className="px-4 py-1 rounded-full bg-[#232228] text-gray-400 text-xs font-semibold mb-4">Built for AI</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white text-center mb-3">Modernizing the Digital Backbone</h2>
+          <span className="px-4 py-1 rounded-full bg-[#232228] text-gray-400 text-xs font-semibold mb-4">Built for YOU</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white text-center mb-3">Modernizing the Video Recording & Sharing Experience</h2>
           <div className="text-gray-400 text-lg text-center max-w-2xl">
-            Data center software (DCIM, BMS and EPMS) has stagnated. We've built a better way.
+            See Everything. Miss Nothing.
           </div>
         </div>
       </div>

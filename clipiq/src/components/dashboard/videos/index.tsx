@@ -10,12 +10,14 @@ import React from "react";
 type props = {
   workspaceId: string;
   folderId: string;
+  queryKey:string
 };
 
-const Videos = ({ workspaceId, folderId }: props) => {
-  const { data, isPending } = useQueryData(["folder-videos"], () =>
+const Videos = ({ workspaceId, folderId,queryKey }: props) => {
+  const { data, isPending } = useQueryData([queryKey], () =>
     getUserVideos(folderId)
   );
+  console.log(data)
   const { status, data: videos } = data as VideosProps;
 
   return (
