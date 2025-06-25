@@ -8,12 +8,12 @@ import {
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import React from "react";
-type props = {
-  params: {
+type Props = {
+  params: Promise<{
     videoId: string;
-  };
+  }>;
 };
-const page = async ({ params }: props) => {
+const page = async ({ params }: Props) => {
   const auth =await onAuthenticated();
     //  if(auth.status === 200 || auth.status === 201){
     //       return redirect(`/dashboard/${auth.user?.workspace[0].id}`)

@@ -8,9 +8,9 @@ import {
 } from "@tanstack/react-query";
 import React from "react";
 type props = {
-  params: {
+  params: Promise<{
     videoId: string;
-  };
+  }>;
 };
 const page = async ({ params }: props) => {
   const { videoId } = await params;

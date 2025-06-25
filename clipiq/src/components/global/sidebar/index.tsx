@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -22,7 +22,7 @@ import { useQueryData } from "@/hooks/useQueryData";
 import { getUserWorkspaces } from "../../../app/actions/workspace";
 import { WorkspaceProps } from "@/types/index.type";
 import Modal from "@/components/global/modal";
-import { Info, Menu, PlusCircle } from "lucide-react";
+import {Menu, PlusCircle } from "lucide-react";
 import Search from "../Search";
 import Link from "next/link";
 import { menuItems } from "@/constants/menu-items";
@@ -179,7 +179,6 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
             ))}
         </ul>
       </nav>
-
       <Separator className="w-full text-[#777777] m-0" />
       {workspace.subscription?.plan === "FREE" && (
         <GlobalCard

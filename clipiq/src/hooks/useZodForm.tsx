@@ -4,7 +4,7 @@
 //combined with zod for validation using resolver
 //useMutataion- for api call to update db on success
 
-import {z, ZodTypeAny  } from "zod";
+import { ZodTypeAny  } from "zod";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';

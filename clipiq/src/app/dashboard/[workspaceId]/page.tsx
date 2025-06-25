@@ -6,7 +6,7 @@ import Folders from "@/components/dashboard/Folders";
 import Videos from "@/components/dashboard/videos";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-type PageParams = { params: { workspaceId: string } };
+type PageParams = { params: Promise<{ workspaceId: string }> };
 
 export default async function DashboardHome({ params }: PageParams) {
   const { workspaceId } = await params;

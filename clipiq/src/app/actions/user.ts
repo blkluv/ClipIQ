@@ -94,24 +94,6 @@ export const getUserNotifications = async () => {
   try {
     const user = await currentUser();
     if (!user) return { status: 404 };
-
-    // const notifications = await client.user.findUnique({
-    //   where: {
-    //     clerkid: user.id,
-    //   },
-    //   select: {
-    //     notification: {
-    //       orderBy: {
-    //         createdAt: "desc",
-    //       },
-    //     },
-    //     _count: {
-    //       select: {
-    //         notification: true,
-    //       },
-    //     },
-    //   },
-    // });
      const notifications = await client.user.findUnique({
             where: {
                 clerkid: user.id
@@ -538,3 +520,35 @@ export const acceptInviteAction = async (inviteId: string) => {
     return {status:500 , data:"Oops! Something went wrong"}
   }
 };
+
+export const completeSubscription = async (session: string) => {
+    try {
+      const user = await currentUser()
+      if (!user) return { status: 404 }
+  
+      // const session = await stripe.checkout.sessions.retrieve(session_id)
+      // if (session) {
+        const customer = await client.user.update({
+          where: {
+            clerkid: user.id,
+          },
+          data: {
+            subscription: {
+              update: {
+                data: {
+                  customerId: session,
+                  plan: 'PRO',
+                },
+              },
+            },
+          },
+        })
+        if (customer) {
+          return { status: 200 , data: "Subscription completed successfully" }
+        // }
+      }
+      return { status: 404 , data: "Subscription failed" }
+    } catch  {
+      return { status: 400 , data: "Oops! Something went wrong" }
+    }
+  }

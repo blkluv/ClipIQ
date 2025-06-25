@@ -41,7 +41,7 @@ const VideoCard = ({ video }: props) => {
             className="w-full aspect-video opacity-50 z-20"
           >
             <source
-              src={video.source}
+              src={video.source ? video.source : undefined}
             />
           </video>
         </Link>

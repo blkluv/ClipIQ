@@ -5,12 +5,13 @@ import React from "react";
 import { toast } from "sonner";
 
 type Props = {
-  params: {
+  params: Promise<{
     inviteId: string;
-  };
+  }>;
 };
 
-const Page = async ({ params: { inviteId } }: Props) => {
+const Page = async ({ params }: Props) => {
+  const { inviteId } = await params;
   const invite = await acceptInviteAction(inviteId);
 
   if (invite.status === 404) return redirect("/auth/sign-in");
