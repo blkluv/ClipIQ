@@ -43,8 +43,6 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-
-
 :root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
@@ -166,4 +164,13 @@
 }
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;             /* Chrome, Safari, Opera */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

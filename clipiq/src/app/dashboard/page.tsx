@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { onAuthenticated } from '@/app/actions/user';
 import { redirect } from 'next/navigation';
 import React from 'react'

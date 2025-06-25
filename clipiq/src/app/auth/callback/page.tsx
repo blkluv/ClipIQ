@@ -4,7 +4,7 @@
 //NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/auth/callback
 //NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/auth/callback
 //Clerk’s React components and hooks (like <SignIn />, <SignUp />, or useSignIn()) will use these values automatically for post-auth redirects.
-
+export const dynamic = "force-dynamic";
 import { onAuthenticated } from '@/app/actions/user';
 import { redirect } from 'next/navigation';
 
