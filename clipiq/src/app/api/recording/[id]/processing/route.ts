@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   req: NextRequest,
-context: { params: { id: string } } 
+{ params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await req.json();
 
-    const id = context.params.id;
+    const {id} = await params;
     console.log(id);
 
     const personalworkspaceId = await client.user.findUnique({
