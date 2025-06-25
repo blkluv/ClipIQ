@@ -33,7 +33,7 @@ export default function PartnersBar() {
         <div className="text-gray-400 text-center mb-10 text-lg md:text-xl font-normal">
           Your Workspace, Your Way—Powered by ClipIQ.
         </div>
-        <div className="relative w-full overflow-hidden">
+        {/* <div className="relative w-full overflow-hidden">
         <motion.div
           className="flex gap-x-12 items-center"
           animate={{ x: ['0%', '-50%'] }}
@@ -59,7 +59,7 @@ export default function PartnersBar() {
             </div>
           ))}
         </motion.div>
-      </div>
+      </div> */}
         <div className="flex flex-col items-center mt-14">
           <span className="px-4 py-1 rounded-full bg-[#232228] text-gray-400 text-xs font-semibold mb-4">Built for YOU</span>
           <h2 className="text-3xl md:text-5xl font-bold text-white text-center mb-3">Modernizing the Video Recording & Sharing Experience</h2>

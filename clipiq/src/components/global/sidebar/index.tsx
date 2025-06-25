@@ -63,8 +63,8 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
     <div className="bg-[#111111] flex-none relative p-4 h-full w-[280px] flex flex-col gap-4 items-center overflow-hidden">
       <div className="bg-[#111111] p-4 flex gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0">
         <Image src="/images/logo.jpeg" alt="logo" width={40} height={40} />
-        <Link href={"/"}>
-          <p className="text-2xl text-white">ClipIQ</p>
+        <Link href="/">
+          <span className="text-2xl text-white">ClipIQ</span>
         </Link>
       </div>
       <Select
