@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Navbar from '../components/landingpage/Navbar';
 import HeroSection from '../components/landingpage/HeroSection';
 import PartnersBar from '../components/landingpage/PartnersBar';

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
