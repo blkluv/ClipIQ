@@ -61,6 +61,7 @@ ClipIQ is a **modern SaaS platform** that streamlines video capture, real-time s
 ---
 
 ### 🖥️ Desktop App (Electron.js)
+[Github Repo](https://github.com/utkarsh-2033/ClipIQ-desktop-app)
 
 - 🎥 **Screen Recorder**  
   - Choose display + audio input + webcam  
@@ -88,7 +89,7 @@ ClipIQ is a **modern SaaS platform** that streamlines video capture, real-time s
 | Plan     | Monthly Price | Recording Limit     | AI Features                      | Sharing              |
 |----------|----------------|----------------------|----------------------------------|-----------------------|
 | Free     | ₹ 0            | 5 minutes/video      | ✖️ AI tools disabled              | Private workspaces only |
-| Pro      | ₹ 999/month    | Unlimited recording  | ✅ AI transcript, title & description | Public + Invite workspaces |
+| Pro      | ₹ 99/month    | Unlimited recording  | ✅ AI transcript, title & description | Public + Invite workspaces |
 
 ---
 
