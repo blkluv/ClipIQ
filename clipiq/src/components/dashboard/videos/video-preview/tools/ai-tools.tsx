@@ -1,86 +1,64 @@
-import { Button } from '@/components/ui/button'
-import { TabsContent } from '@/components/ui/tabs'
-import React from 'react'
+import { Button } from "@/components/ui/button";
+import { TabsContent } from "@/components/ui/tabs";
+import React from "react";
 // import Loader from '../loader'
-import {
-  Bot,
-  FileTextIcon,
-  Pencil,
-  StarsIcon,
-} from 'lucide-react'
-import Loader from '@/components/global/loader'
+import { Bot, FileTextIcon, Pencil, StarsIcon } from "lucide-react";
+import Loader from "@/components/global/loader";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  plan: 'PRO' | 'FREE' | undefined
-  trial?: boolean
-  videoId: string
-}
+  plan: "PRO" | "FREE" | undefined;
+  trial?: boolean;
+  videoId: string;
+};
 
 const AITools = (props: Props) => {
-  //Are they on a free plan?
-  //have they already tried the AI feature?
-  //if not? Try button
-  
-  // useMutationData
-  //serveraction titles and description
-
-  //WIP: setup the AI hook
+  const router = useRouter();
   return (
     <TabsContent value="AI tools">
       <div className="p-5 bg-[#1D1D1D]  rounded-xl flex flex-col gap-y-6 ">
         <div className="flex items-center gap-4">
           <div className="w-full">
-            <h2 className="text-3xl font-bold">AI Tools</h2>
+            <h2 className="text-3xl text-white font-bold">AI Tools</h2>
             <p className="text-[#BDBDBD] ">
               Taking your video to the next step with the power of AI!
             </p>
           </div>
 
           <div className="flex gap-4 w-full justify-end">
-            <Button className="mt-2 text-sm">
+            {/* <Button className="mt-2 text-sm">
               <Loader
                 state={false}
                 color="#000"
               >
                 Try now
               </Loader>
-            </Button>
-            {/* WIP: Pay button  */}
-            <Button
-              className="mt-2 text-sm"
-              variant={'secondary'}
-            >
-              <Loader
-                state={false}
-                color="#000"
+            </Button> */}
+            {props.plan === "FREE" && (
+              <Button
+                className="mt-2 text-sm"
+                onClick={() => {
+                  router.push(`/subscription`);
+                }}
               >
-                Pay Now
-              </Loader>
-            </Button>
-            {/* <Button className=" mt-2 text-sm">
-            <Loader
-              state={false}
-              color="#000"
-            >
-              Generate Now
-            </Loader>
-          </Button> */}
+                <Loader state={false} color="#000">
+                  Upgrade Now
+                </Loader>
+              </Button>
+            )}
           </div>
         </div>
         <div className="border-[1px] rounded-xl p-4 gap-4 flex flex-col bg-[#1b0f1b7f] ">
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-bold text-[#a22fe0]"> ClipIQ AI</h2>
-            <StarsIcon
-              color="#a22fe0"
-              fill="#a22fe0"
-            />
+            <StarsIcon color="#a22fe0" fill="#a22fe0" />
           </div>
           <div className="flex gap-2 items-start">
             <div className="p-2 rounded-full border-[#2d2d2d] border-[2px] bg-[#2b2b2b] ">
               <Pencil color="#a22fe0" />
             </div>
             <div className="flex flex-col">
-              <h3 className="textmdg">Summary</h3>
+              <h3 className="text-md text-white">Summary</h3>
               <p className="text-muted-foreground text-sm">
                 Generate a description for your video using AI.
               </p>
@@ -91,7 +69,7 @@ const AITools = (props: Props) => {
               <FileTextIcon color="#a22fe0" />
             </div>
             <div className="flex flex-col">
-              <h3 className="textmdg">Summary</h3>
+              <h3 className="text-md text-white">Summary</h3>
               <p className="text-muted-foreground text-sm">
                 Generate a description for your video using AI.
               </p>
@@ -102,7 +80,7 @@ const AITools = (props: Props) => {
               <Bot color="#a22fe0" />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-md">AI Agent</h3>
+              <h3 className="text-md  text-white">AI Agent</h3>
               <p className="text-muted-foreground text-sm">
                 Viewers can ask questions on your video and our AI agent will
                 respond.
@@ -112,7 +90,7 @@ const AITools = (props: Props) => {
         </div>
       </div>
     </TabsContent>
-  )
-}
+  );
+};
 
-export default AITools
+export default AITools;

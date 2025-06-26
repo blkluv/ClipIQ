@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Sheet,
   SheetContent,
@@ -22,7 +22,7 @@ import { useQueryData } from "@/hooks/useQueryData";
 import { getUserWorkspaces } from "../../../app/actions/workspace";
 import { WorkspaceProps } from "@/types/index.type";
 import Modal from "@/components/global/modal";
-import {Menu, PlusCircle } from "lucide-react";
+import { Menu, PlusCircle } from "lucide-react";
 import Search from "../Search";
 import Link from "next/link";
 import { menuItems } from "@/constants/menu-items";
@@ -42,7 +42,6 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
   const handleWorkspaceChange = (value: string) => {
     console.log("Selected workspace:", value);
     // Navigate to the selected workspace
-    //WIP- rectify - bounces back due to layout.tsx verifyworkspaceaccess(hasaccess)
     router.push(`/dashboard/${value}`);
   };
 
@@ -53,6 +52,9 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
 
   const menuitems = menuItems(activeWorkspaceId);
   const { data: workspace } = data as WorkspaceProps;
+  const currentWorkspace = workspace.workspace.find(
+    (s) => s.id === activeWorkspaceId
+  );
 
   //left -renaming data to workspace and destructuring
   //eight- typing data as WorkspaceProps to ensure type safety and ignoring status part
@@ -107,10 +109,7 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      {/* //WIP - currentWorkspace.type==="PUBLIC" && */}
-      {workspace?.subscription?.plan === "FREE" ? (
-        ""
-      ) : (
+      {currentWorkspace?.type === "PUBLIC" && (
         <Modal
           trigger={
             <span className="text-lg  cursor-pointer flex justify-center items-center bg-neutral-800/90 hover:bg-neutral-800/60 p-[10px] px-5 w-full rounded-sm gap-2 text-neutral-300">
@@ -146,14 +145,14 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
       </nav>
 
       <Separator className="w-full text-[#777777] m-0" />
-      <p className="mt-4 w-full text-[#9D9D9D] font-bold">Workspaces</p>
-      {workspace?.subscription?.plan === "FREE" && (
+      <p className="mt-1 w-full text-[#9D9D9D] font-bold">Workspaces</p>
+      {/* {workspace?.subscription?.plan === "FREE" && (
         <p className="text-xs text-[#9D9D9D]">
           You are on a free plan. Upgrade to add public workspaces.
         </p>
-      )}
+      )} */}
       <nav className="w-full">
-        <ul className="h-fit overflow-auto overflow-x-hidden">
+        <ul className="h-[100px] overflow-auto overflow-x-hidden">
           {workspace?.workspace?.length > 0 &&
             workspace?.workspace?.map(
               (workspace) =>
@@ -185,8 +184,11 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
           title="Upgrade to Pro"
           description=" Unlock AI features like transcription, AI summary, and more."
           footer={
-            <Button variant="ghost" className="w-full bg-amber-50 text-black">
-              {" "}
+            <Button
+              onClick={() => router.push(`/subscription?id=${activeWorkspaceId}`)}
+              variant="ghost"
+              className="w-full bg-amber-50 text-black"
+            >
               Upgrade
             </Button>
           }
@@ -197,16 +199,12 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
 
   return (
     <div className="full">
-      <InfoBar/>
+      <InfoBar />
       <div className="md:hidden h-16"></div>
       <Sheet>
-        <SheetTrigger
-        asChild
-        className="ml-4 z-50"
-        >
-          <Button variant={"ghost"} 
-          className="mt-4 md:hidden relative z-50">
-            <Menu/>
+        <SheetTrigger asChild className="ml-4 z-50">
+          <Button variant={"ghost"} className="mt-4 md:hidden relative z-50">
+            <Menu />
           </Button>
         </SheetTrigger>
         <SheetContent side={"left"} className="p-0 w-fit h-full z-50">
@@ -214,9 +212,7 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
           {SideBarSection}
         </SheetContent>
       </Sheet>
-      <div className="md:block hidden  h-full">
-        {SideBarSection}
-        </div>
+      <div className="md:block hidden  h-full">{SideBarSection}</div>
     </div>
   );
 };

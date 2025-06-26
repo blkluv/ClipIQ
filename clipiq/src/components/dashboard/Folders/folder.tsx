@@ -69,7 +69,7 @@ const Folder = ({ name, id, optimistic, count }: props) => {
               onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                 updateName(e);
               }}
-              className="border-none outline-none  text-base w-full  text-neutral-300 bg-transparent p-0"
+              className="border-none outline-none  text-base w-full text-neutral-300 bg-transparent p-0"
             />
           ) : (
             <p
@@ -78,7 +78,7 @@ const Folder = ({ name, id, optimistic, count }: props) => {
               onClick={(e) => {
                 e.stopPropagation();
               }}
-              className="text-neutral-300"
+              className="text-[#0f0f0f] hover:text-neutral-300 dark:text-neutral-300"
             >
               {latestVariables &&
               latestVariables.status == "pending" &&
@@ -87,7 +87,7 @@ const Folder = ({ name, id, optimistic, count }: props) => {
                 : name}
             </p>
           )}
-          <span className="text-xs text-neutral-500">
+          <span className="text-xs text-[#1D1D1D] hover:text-neutral-300 dark:text-neutral-500">
             {count ? `${count} videos` : "0 videos"}{" "}
           </span>
         </div>

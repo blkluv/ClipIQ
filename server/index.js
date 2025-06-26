@@ -173,9 +173,9 @@ io.on("connection", (socket) => {
               `${process.env.NEXT_API_HOST}recording/${data.userId}/complete`,
               {
                 filename: result.secure_url,
-                transcript: transcript,
-                title: title,
-                description: description,
+                transcript: transcript || "",
+                title: title || "Untitled Video",
+                description: description || "No description",
               }
             );
 

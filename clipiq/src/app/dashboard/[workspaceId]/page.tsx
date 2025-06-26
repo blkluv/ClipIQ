@@ -30,7 +30,8 @@ export default async function DashboardHome({ params }: PageParams) {
               </TabsTrigger>
             </TabsList>
             <div className="flex gap-3">
-              <CreateWorkSpace />
+              
+             { <CreateWorkSpace />}
               <CreateFolders workspaceId={workspaceId} />
             </div>
           </div>

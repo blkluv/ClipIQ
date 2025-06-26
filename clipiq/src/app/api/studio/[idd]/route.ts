@@ -1,15 +1,15 @@
 import client from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest,{ params }: { params: Promise<{ id: string }> }) {
+export async function POST(req: NextRequest,{ params }: { params: Promise<{ idd: string }> }) {
   const { screen, audio, preset } = await req.json();
   try {
-    const {id} = await params;
-    console.log(id,"-------------------------------")
+    const {idd} = await params;
+    console.log(idd,"-------------------------------")
     console.log("reched............");
     const studio = await client.user.update({
       where: {
-        id:id
+        id:idd
       },
       data: {
         studio: {

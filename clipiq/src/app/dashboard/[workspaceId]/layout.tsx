@@ -6,13 +6,14 @@ import {
   verifyWorkspace,
 } from "@/app/actions/workspace";
 import GlobalHeader from "@/components/global/global-header";
+import ClientWrapper from "@/components/global/maincontainer";
 import Sidebar from "@/components/global/sidebar";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
 
 type Props = {
@@ -56,15 +57,14 @@ const DashboardLayout = async ({ params, children }: Props) => {
     queryFn: async () => getUserNotifications(),
   });
 
+  
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex h-screen w-screen">
         <Sidebar activeWorkspaceId={workspaceId} />
-        <div className="w-full pt-28 p-6 overflow-y-scroll overflow-x-hidden">
-          {/* <div style={{ background: "red" }}>TEST HEADER</div> */}
-          <GlobalHeader workspace={hasAccess.data.workspace} />
-          <div className="mt-4">{children}</div>
-        </div>
+        <ClientWrapper workspace={hasAccess.data.workspace}>
+          {children}
+        </ClientWrapper>
       </div>
     </HydrationBoundary>
   );

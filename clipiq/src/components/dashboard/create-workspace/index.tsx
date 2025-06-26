@@ -1,10 +1,25 @@
+'use client'
+import { getUserWorkspaces } from '@/app/actions/workspace'
 import WorkspaceForm from '@/components/forms/WorkspaceForm'
 import Modal from '@/components/global/modal'
 import { Button } from '@/components/ui/button'
+import { useQueryData } from '@/hooks/useQueryData'
 import { FolderPlusIcon } from 'lucide-react'
 import React from 'react'
 
 const CreateWorkSpace = () => {
+   const {data} = useQueryData(['user-workspaces'], getUserWorkspaces);
+    const {data: plan} = data as  {
+        status: number,
+        data: {
+            subscription: {
+                plan: 'PRO' | 'FREE'
+            } | null
+        }
+    }
+    if(plan.subscription?.plan === 'FREE'){
+        return <></>
+    }
   return (
     <div>
       <Modal title="Create Workspace"

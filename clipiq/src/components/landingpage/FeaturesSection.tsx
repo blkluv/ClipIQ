@@ -1,12 +1,12 @@
 "use client"
 import React from 'react';
 import { motion } from 'framer-motion';
-import image1 from '../../../public/images/logo.jpeg';
-import image2 from '../../../public/images/logo.jpeg';
-import image3 from '../../../public/images/logo.jpeg';
-import image4 from '../../../public/images/logo.jpeg';
-import image5 from '../../../public/images/logo.jpeg';
-import image6 from '../../../public/images/logo.jpeg';
+import image1 from '../../../public/images/workspace.png';
+import image2 from '../../../public/images/renaming.png';
+import image3 from '../../../public/images/recorder.png';
+import image4 from '../../../public/images/billing.png';
+import image5 from '../../../public/images/thread.png';
+import image6 from '../../../public/images/workspace.png';
 import Image, { StaticImageData } from 'next/image';
 
 interface Feature {

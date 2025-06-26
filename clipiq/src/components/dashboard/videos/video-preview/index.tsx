@@ -26,11 +26,11 @@ const VideoPreview = ({ videoId }: props) => {
     (new Date().getTime() - video.createdAt.getTime()) / (24 * 60 * 60 * 1000)
   );
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-3 lg:py-10 scrollbar-hidden overflow-y-auto gap-5">
+    <div className="mt-12 mx-2 grid grid-cols-1 xl:grid-cols-3 lg:py-10 scrollbar-hidden overflow-y-auto gap-5">
       <div className="flex flex-col lg:col-span-2 gap-y-10">
         <div>
           <div className="flex gap-x-5 items-start justify-between ">
-            <h2 className="text-white text-4xl font-bold">{video.title}</h2>
+            <h2 className="text-[#3d3d3d] dark:text-white text-4xl font-bold">{video.title}</h2>
             {author ? (
               <EditVideo
                 videoId={videoId}
@@ -42,10 +42,10 @@ const VideoPreview = ({ videoId }: props) => {
             )}
           </div>
           <span className="flex gap-x-3 mt-2">
-            <p className="text-[#9D9D9D] capitalize">
+            <p className="text-[#3d3d3d] dark:text-[#9D9D9D] capitalize">
               {video.User?.firstName} {video.User?.lastName}
             </p>
-            <p className="text-[#707070]">
+            <p className="text-[#3d3d3d] dark:text-[#707070]">
               {daysAgo === 0 ? "Today" : `${daysAgo}d ago`}
             </p>
           </span>
@@ -62,7 +62,7 @@ const VideoPreview = ({ videoId }: props) => {
         </video>
         <div className="flex flex-col text-2xl gap-y-4">
           <div className="flex gap-x-5 items-center justify-between">
-            <p className="text-[#BDBDBD] text-semibold">Description</p>
+            <p className="text-[#3d3d3d] dark:text-[#BDBDBD] text-semibold">Description</p>
             {author ? (
               <EditVideo
                 videoId={videoId}
@@ -73,7 +73,7 @@ const VideoPreview = ({ videoId }: props) => {
               <></>
             )}
           </div>
-          <p className="text-[#9D9D9D] text-lg text-medium">
+          <p className="text-[#3d3d3d] dark:text-[#9D9D9D] text-lg text-medium">
             {video.description}
           </p>
         </div>
@@ -91,7 +91,7 @@ const VideoPreview = ({ videoId }: props) => {
             source={video.source}
             title={video.title as string}
           />
-          <Download className="text-[#4d4c4c]" />
+          <Download className="text-[#3d3d3d] dark:text-[#4d4c4c]" />
         </div>
         <div>
           <TabMenu
