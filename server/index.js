@@ -25,8 +25,8 @@ const aai = new AssemblyAI({
 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
 const params = { key: process.env.GEMINI_API_KEY };
 
-// // Set axios default headers
-// axios.defaults.headers.common["origin"] = 'https://opal-express-gc8f.onrender.com';
+//  axios default headers
+// axios.defaults.headers.common["origin"] = 'https://{}.onrender.com';
 // axios.defaults.headers.common["Content-Type"] = "application/json";
 
 // Cloudinary configuration
