@@ -23,6 +23,7 @@
     "fix-webm-duration": "^1.0.6",
     "hound": "^1.0.5",
     "mime": "^4.0.7",
+    "multer": "^2.0.1",
     "nodemon": "^3.1.10",
     "socket.io": "^4.8.1",
     "zod": "^3.25.64"

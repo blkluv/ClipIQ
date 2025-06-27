@@ -34,13 +34,14 @@ import InfoBar from "../topbar";
 
 type SidebarProps = {
   activeWorkspaceId: string;
+  userId: string | null;
 };
-const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
+const Sidebar =({ activeWorkspaceId, userId }: SidebarProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleWorkspaceChange = (value: string) => {
-    console.log("Selected workspace:", value);
+    // console.log("Selected workspace:", value);
     // Navigate to the selected workspace
     router.push(`/dashboard/${value}`);
   };
@@ -185,7 +186,9 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
           description=" Unlock AI features like transcription, AI summary, and more."
           footer={
             <Button
-              onClick={() => router.push(`/subscription?id=${activeWorkspaceId}`)}
+              onClick={() =>
+                router.push(`/subscription?id=${activeWorkspaceId}`)
+              }
               variant="ghost"
               className="w-full bg-amber-50 text-black"
             >
@@ -199,7 +202,7 @@ const Sidebar = ({ activeWorkspaceId }: SidebarProps) => {
 
   return (
     <div className="full">
-      <InfoBar />
+      <InfoBar userId={userId} />
       <div className="md:hidden h-16"></div>
       <Sheet>
         <SheetTrigger asChild className="ml-4 z-50">

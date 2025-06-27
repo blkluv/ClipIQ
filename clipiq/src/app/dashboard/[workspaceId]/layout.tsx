@@ -57,11 +57,13 @@ const DashboardLayout = async ({ params, children }: Props) => {
     queryFn: async () => getUserNotifications(),
   });
 
+  const userId = auth.user.id;
+
   
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex h-screen w-screen">
-        <Sidebar activeWorkspaceId={workspaceId} />
+        <Sidebar activeWorkspaceId={workspaceId} userId={userId} />
         <ClientWrapper workspace={hasAccess.data.workspace}>
           {children}
         </ClientWrapper>
