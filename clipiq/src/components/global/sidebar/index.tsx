@@ -147,13 +147,13 @@ const Sidebar =({ activeWorkspaceId, userId }: SidebarProps) => {
 
       <Separator className="w-full text-[#777777] m-0" />
       <p className="mt-1 w-full text-[#9D9D9D] font-bold">Workspaces</p>
-      {/* {workspace?.subscription?.plan === "FREE" && (
+      {workspace?.subscription?.plan === "FREE" && (
         <p className="text-xs text-[#9D9D9D]">
           You are on a free plan. Upgrade to add public workspaces.
         </p>
-      )} */}
+      )}
       <nav className="w-full">
-        <ul className="h-[100px] overflow-auto overflow-x-hidden">
+        <ul className="h-[100px] scrollbar-hidden overflow-auto overflow-x-hidden">
           {workspace?.workspace?.length > 0 &&
             workspace?.workspace?.map(
               (workspace) =>
@@ -206,7 +206,7 @@ const Sidebar =({ activeWorkspaceId, userId }: SidebarProps) => {
       <div className="md:hidden h-16"></div>
       <Sheet>
         <SheetTrigger asChild className="ml-4 z-50">
-          <Button variant={"ghost"} className="mt-4 md:hidden relative z-50">
+          <Button variant={"ghost"} className="fixed top-4 left-2.5 z-50 md:hidden bg-[#111] rounded-full p-3">
             <Menu />
           </Button>
         </SheetTrigger>

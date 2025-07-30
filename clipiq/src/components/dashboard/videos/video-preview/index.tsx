@@ -26,11 +26,11 @@ const VideoPreview = ({ videoId }: props) => {
     (new Date().getTime() - video.createdAt.getTime()) / (24 * 60 * 60 * 1000)
   );
   return (
-    <div className="mt-12 mx-2 grid grid-cols-1 xl:grid-cols-3 lg:py-10 scrollbar-hidden overflow-y-auto gap-5">
-      <div className="flex flex-col lg:col-span-2 gap-y-10">
+    <div className="md:mt-12 mt-22 mx-2 grid grid-cols-1 xl:grid-cols-3 lg:py-10 scrollbar-hidden overflow-y-auto gap-5">
+      <div className="flex flex-col lg:col-span-2 gap-y-10 md:gap-y-10">
         <div>
           <div className="flex gap-x-5 items-start justify-between ">
-            <h2 className="text-[#3d3d3d] dark:text-white text-4xl font-bold">{video.title}</h2>
+            <h2 className="text-[#3d3d3d] dark:text-white text-2xl md:text-4xl font-bold">{video.title}</h2>
             {author ? (
               <EditVideo
                 videoId={videoId}
@@ -41,7 +41,7 @@ const VideoPreview = ({ videoId }: props) => {
               <></>
             )}
           </div>
-          <span className="flex gap-x-3 mt-2">
+          <span className="text-xs text-md flex gap-x-3 md:mt-2">
             <p className="text-[#3d3d3d] dark:text-[#9D9D9D] capitalize">
               {video.User?.firstName} {video.User?.lastName}
             </p>
@@ -60,7 +60,7 @@ const VideoPreview = ({ videoId }: props) => {
             src={video.source}
           />
         </video>
-        <div className="flex flex-col text-2xl gap-y-4">
+        <div className="flex flex-col text-xl md:text-2xl gap-y-4">
           <div className="flex gap-x-5 items-center justify-between">
             <p className="text-[#3d3d3d] dark:text-[#BDBDBD] text-semibold">Description</p>
             {author ? (
@@ -73,7 +73,7 @@ const VideoPreview = ({ videoId }: props) => {
               <></>
             )}
           </div>
-          <p className="text-[#3d3d3d] dark:text-[#9D9D9D] text-lg text-medium">
+          <p className="text-[#3d3d3d] dark:text-[#9D9D9D] text-sm md:text-lg text-medium">
             {video.description}
           </p>
         </div>
@@ -103,7 +103,7 @@ const VideoPreview = ({ videoId }: props) => {
               trial={video.User?.trial}
               plan={video.User?.subscription?.plan}
             />
-            <VideoTranscript transcript={"hbdchbdkhbhcbwhcb"} />
+            <VideoTranscript transcript={video.summery} />
             <Activities  videoId={videoId} />
           </TabMenu>
         </div>

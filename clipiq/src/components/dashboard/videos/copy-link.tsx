@@ -18,7 +18,7 @@ const path= process.env.NEXT_PUBLIC_HOST_URL || "http://localhost:3000"
 const CopyLink = ({folderId,classname,variant}:props) => {
     const copylinkHandler=()=>{
         navigator.clipboard.writeText(
-            `${path}preview/${folderId}`
+            `${path}/preview/${folderId}`
         )
         toast("copied",{description:"Link copied successfully."})
     }

@@ -37,7 +37,7 @@ const RichLink = ({ description, id, source, title }: Props) => {
   return (
     <Button
       onClick={copyRichText}
-      className="rounded-full"
+      className="text-xs md:text-sm rounded-full"
     >
       Get Embedded Code
     </Button>

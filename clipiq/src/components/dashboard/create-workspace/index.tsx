@@ -30,8 +30,8 @@ const CreateWorkSpace = () => {
             <span className="hidden md:inline">
             Create Workspace
             </span>
-            <span className="inline md:hidden">
-            Workspace
+            <span className=" text-xs inline md:hidden">
+            Wspace
             </span>
         </Button>
       }>

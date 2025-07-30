@@ -21,6 +21,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="icon" href="/images/logo.jpeg" />
+          {/* Or use .png or .svg if you prefer */}
+        </head>
         <body className={`${manrope.className} bg-gray-200 dark:bg-[#171717]  overflow-x-hidden`}>
           <ThemeProvider
             attribute="class"

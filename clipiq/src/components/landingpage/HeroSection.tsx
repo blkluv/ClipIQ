@@ -28,9 +28,9 @@ export default function HeroSection(): React.ReactElement {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="max-w-7xl mx-auto text-6xl md:text-7xl font-bold mb-4 text-gray-200 tracking-tight text-center flex items-center justify-content"
+          className="max-w-7xl mx-auto text-5xl md:text-7xl font-bold mb-4 text-gray-200 tracking-tight text-center flex items-center justify-content"
         >
-          <span>ClipIQ</span><span className='text-4xl'>- Your All‑In‑One AI‑Powered Video Collaboration Suite</span>
+          <span>ClipIQ</span><span className='ml-3.5 md:ml-0 text-3xl md:text-4xl'>- Your All‑In‑One AI‑Powered Video Collaboration Suite</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}

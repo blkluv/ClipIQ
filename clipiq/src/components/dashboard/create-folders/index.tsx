@@ -21,7 +21,7 @@ const CreateFolders = ({workspaceId}:props) => {
           <span className="hidden md:inline">
             Create Folder
             </span>
-            <span className="inline md:hidden">
+            <span className="text-xs inline md:hidden">
             Folder
             </span>
         </Button>

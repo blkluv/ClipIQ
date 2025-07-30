@@ -15,22 +15,21 @@ export default async function DashboardHome({ params }: PageParams) {
       <div>
         <Tabs defaultValue="videos" className="mt-6">
           <div className="flex w-full justify-between items-center">
-            <TabsList className="bg-transparent gap-2 pl-0">
+            <TabsList className="bg-transparent gap-1 md:gap-2 pl-0">
               <TabsTrigger
                 value="videos"
-                className="p-[13px] px-6 rounded-full data-[state=active]:bg-[#252525]"
+                className="p-[13px] md:px-6 px-3 text-xs md:text-md rounded-full data-[state=active]:bg-[#252525]"
               >
                 Videos
               </TabsTrigger>
               <TabsTrigger
                 value="archive"
-                className="p-[13px] px-6 rounded-full data-[state=active]:bg-[#252525]"
+                className="p-[13px] md:px-6 px-3 text-xs md:text-md rounded-full data-[state=active]:bg-[#252525]"
               >
                 Archive
               </TabsTrigger>
             </TabsList>
             <div className="flex gap-3">
-              
              { <CreateWorkSpace />}
               <CreateFolders workspaceId={workspaceId} />
             </div>
