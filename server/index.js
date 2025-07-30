@@ -11,7 +11,6 @@ const path = require("path");
 const multer = require("multer");
 const { AssemblyAI } = require("assemblyai");
 
-
 const app = express();
 app.use(cors());
 dotenv.config();
@@ -99,13 +98,12 @@ app.post("/upload", upload.single("video"), async (req, res) => {
                 {
                   parts: [
                     {
-                      text: `You are going to generate a title and a nice description using the speech to text transcription provided -transcription(${transcript}) and then return it in the strictly  json format with "title" and "description" `,
+                      text: `You are going to generate a title and a nice description using the speech to text transcription provided -transcription(${transcriptText}) and then return it in the strictly  json format with "title" and "description" `,
                     },
                   ],
                 },
               ],
             };
-
             try {
               const response = await axios.post(url, payload, {
                 params,
@@ -113,6 +111,26 @@ app.post("/upload", upload.single("video"), async (req, res) => {
               });
               const content = response.data.candidates[0].content.parts[0].text;
               console.log("💬 Gemini Output:", content);
+              let jsonString = content.trim();
+
+              if (jsonString.startsWith("```json")) {
+                jsonString = jsonString
+                  .replace(/^```json/, "")
+                  .replace(/```$/, "")
+                  .trim();
+              }
+
+              try {
+                const parsed = JSON.parse(jsonString);
+
+                generatedTitle = parsed.title;
+                generatedDescription = parsed.description;
+                // Now you can use generatedTitle and generatedDescription
+                console.log("Title:", generatedTitle);
+                console.log("Description:", generatedDescription);
+              } catch (err) {
+                console.error("Failed to parse Gemini output:", err);
+              }
               // return response.data;
             } catch (err) {
               console.error(
@@ -123,6 +141,7 @@ app.post("/upload", upload.single("video"), async (req, res) => {
             }
           }
         }
+
         const stopProcessing = await axios.post(
           `${process.env.NEXT_API_HOST}api//recording/${userId}/complete`,
           {
@@ -256,7 +275,7 @@ io.on("connection", (socket) => {
                     {
                       parts: [
                         {
-                          text: `You are going to generate a title and a nice description using the speech to text transcription provided -transcription(${transcript}) and then return it in the strictly  json format with "title" and "description" `,
+                          text: `You are going to generate a title and a nice description using the speech to text transcription provided -transcription(${transcriptText}) and then return it in the strictly  json format with "title" and "description" `,
                         },
                       ],
                     },
@@ -281,10 +300,31 @@ io.on("connection", (socket) => {
                 }
               }
             }
+            let jsonString = content.trim();
+
+            if (jsonString.startsWith("```json")) {
+              jsonString = jsonString
+                .replace(/^```json/, "")
+                .replace(/```$/, "")
+                .trim();
+            }
+
+            try {
+              const parsed = JSON.parse(jsonString);
+
+              const generatedTitle = parsed.title;
+              const generatedDescription = parsed.description;
+              // Now you can use generatedTitle and generatedDescription
+              console.log("Title:", generatedTitle);
+              console.log("Description:", generatedDescription);
+            } catch (err) {
+              console.error("Failed to parse Gemini output:", err);
+            }
             // Complete processing
             const stopProcessing = await axios.post(
               `${process.env.NEXT_API_HOST}api/recording/${data.userId}/complete`,
-              { filename: data.filename,
+              {
+                filename: data.filename,
                 videoUrl: result.secure_url,
                 transcript: transcriptText,
                 title: generatedTitle,

@@ -103,7 +103,7 @@ const VideoPreview = ({ videoId }: props) => {
               trial={video.User?.trial}
               plan={video.User?.subscription?.plan}
             />
-            <VideoTranscript transcript={video.summery} />
+            <VideoTranscript transcript={video.summary} />
             <Activities  videoId={videoId} />
           </TabMenu>
         </div>

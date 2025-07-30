@@ -1,6 +1,7 @@
 "use server";
 import client from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+import { vi } from "zod/v4/locales";
 
 export const verifyWorkspace = async (workspaceId: string) => {
   try {
@@ -297,6 +298,7 @@ export const getVideoDetails = async (videoId: string) => {
       },
     });
     if (video) {
+      console.log(video);
       return {
         status: 200,
         data: video,

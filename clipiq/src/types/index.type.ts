@@ -111,7 +111,7 @@ export type VideoDataProps = {
       views: number
       createdAt: Date
       processing: boolean
-      summery: string
+      summary: string
     }
     author: boolean
   }
