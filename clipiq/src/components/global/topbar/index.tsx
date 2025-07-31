@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UserButton } from "@clerk/nextjs";
 import { Search, Video } from "lucide-react";
+import Record from "./record";
 type Props = {
   userId: string | null;
 };
@@ -19,10 +20,7 @@ const InfoBar = ({ userId }: Props) => {
       </div>
       <div className="flex items-center gap-4">
         <VideoUpload userId={userId} />
-        <Button className=" bg-[#9d9d9d] text-black hover:bg-neutral-600 flex items-center gap-2">
-          <Video className="fill-black" />
-          <span className="flex items-center gap-2 font-bold">Record</span>
-        </Button>
+        <Record/>
         <UserButton />
       </div>
     </header>
