@@ -302,8 +302,8 @@ io.on("connection", (socket) => {
                   try {
                     const parsed = JSON.parse(jsonString);
 
-                    const generatedTitle = parsed.title;
-                    const generatedDescription = parsed.description;
+                    generatedTitle = parsed.title;
+                    generatedDescription = parsed.description;
                     // Now you can use generatedTitle and generatedDescription
                     console.log("Title:", generatedTitle);
                     console.log("Description:", generatedDescription);
