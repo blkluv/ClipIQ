@@ -299,7 +299,7 @@ io.on("connection", (socket) => {
                   throw err;
                 }
               }
-            }
+            
             let jsonString = content.trim();
 
             if (jsonString.startsWith("```json")) {
@@ -320,6 +320,7 @@ io.on("connection", (socket) => {
             } catch (err) {
               console.error("Failed to parse Gemini output:", err);
             }
+          }
             // Complete processing
             const stopProcessing = await axios.post(
               `${process.env.NEXT_API_HOST}api/recording/${data.userId}/complete`,
