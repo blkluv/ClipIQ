@@ -290,7 +290,26 @@ io.on("connection", (socket) => {
                   const content =
                     response.data.candidates[0].content.parts[0].text;
                   console.log("💬 Gemini Output:", content);
-                  // return response.data;
+                  let jsonString = content.trim();
+
+                  if (jsonString.startsWith("```json")) {
+                    jsonString = jsonString
+                      .replace(/^```json/, "")
+                      .replace(/```$/, "")
+                      .trim();
+                  }
+
+                  try {
+                    const parsed = JSON.parse(jsonString);
+
+                    const generatedTitle = parsed.title;
+                    const generatedDescription = parsed.description;
+                    // Now you can use generatedTitle and generatedDescription
+                    console.log("Title:", generatedTitle);
+                    console.log("Description:", generatedDescription);
+                  } catch (err) {
+                    console.error("Failed to parse Gemini output:", err);
+                  }
                 } catch (err) {
                   console.error(
                     "❌ Gemini error:",
@@ -299,28 +318,7 @@ io.on("connection", (socket) => {
                   throw err;
                 }
               }
-            
-            let jsonString = content.trim();
-
-            if (jsonString.startsWith("```json")) {
-              jsonString = jsonString
-                .replace(/^```json/, "")
-                .replace(/```$/, "")
-                .trim();
             }
-
-            try {
-              const parsed = JSON.parse(jsonString);
-
-              const generatedTitle = parsed.title;
-              const generatedDescription = parsed.description;
-              // Now you can use generatedTitle and generatedDescription
-              console.log("Title:", generatedTitle);
-              console.log("Description:", generatedDescription);
-            } catch (err) {
-              console.error("Failed to parse Gemini output:", err);
-            }
-          }
             // Complete processing
             const stopProcessing = await axios.post(
               `${process.env.NEXT_API_HOST}api/recording/${data.userId}/complete`,
