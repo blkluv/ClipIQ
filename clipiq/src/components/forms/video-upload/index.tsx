@@ -38,7 +38,7 @@ const VideoUpload = ({ userId }: Props) => {
         toast.error("Upload failed: " + text);
       } else {
         const json = await res.json();
-        toast.success("Upload started!");
+        toast.success("Upload done!");
         // maybe json.url or whatever
         router.refresh();
       }

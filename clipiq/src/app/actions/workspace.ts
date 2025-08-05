@@ -165,7 +165,7 @@ export const CreateWorkSpaceAction = async (name: string) => {
           },
         },
       });
-      if (workspace) return { status: 401, data: "Workspace Created" };
+      if (workspace) return { status: 200, data: "Workspace Created" };
       return {
         status: 401,
         data: "You are not authorized to create a workspace",
@@ -258,7 +258,7 @@ export const moveVideoAction = async (
         workSpaceId,
       },
     });
-    if (location) return { status: 200, data: "folder changed successfully" };
+    if (location) return { status: 200, data: "Video moved successfully!" };
     return { status: 404, data: "workspace/folder not found" };
   } catch {
     return { status: 500, data: "Oops! something went wrong" };

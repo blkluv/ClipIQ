@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import client from "@/lib/prisma";
 import nodemailer from "nodemailer";
 
-export const sendMail = async(
+export const sendMail = async (
   to: string,
   subject: string,
   text: string,
@@ -94,19 +94,19 @@ export const getUserNotifications = async () => {
   try {
     const user = await currentUser();
     if (!user) return { status: 404 };
-     const notifications = await client.user.findUnique({
-            where: {
-                clerkid: user.id
-            },
-            select: {
-                notification: true,
-                _count: {
-                    select: {
-                        notification: true
-                    }
-                }
-            }
-        })
+    const notifications = await client.user.findUnique({
+      where: {
+        clerkid: user.id,
+      },
+      select: {
+        notification: true,
+        _count: {
+          select: {
+            notification: true,
+          },
+        },
+      },
+    });
     // console.log("----------------------------")
     // console.log(notifications)
     // console.log("----------------------------")
@@ -190,7 +190,7 @@ export const addCommentAndReply = async (
           },
         },
       });
-      if (reply) return { status: 200, data: "reply posted" };
+      if (reply) return { status: 200, data: "reply added!" };
     } else {
       const addcomment = await client.video.update({
         where: {
@@ -205,10 +205,9 @@ export const addCommentAndReply = async (
           },
         },
       });
-      if (addcomment)
-        return { status: 200, data: "comment added successfully" };
+      if (addcomment) return { status: 200, data: "comment added!" };
     }
-    return { status: 400, data: "comment posted" };
+    return { status: 400, data: "comment failed" };
   } catch (error) {
     return { status: 400, data: "Something went wrong!" };
   }
@@ -291,7 +290,7 @@ export const inviteMemberAction = async (
       select: {
         firstName: true,
         lastName: true,
-        email:true
+        email: true,
       },
     });
 
@@ -360,7 +359,7 @@ export const inviteMemberAction = async (
   <!-- Logo + App Name -->
   <div style="margin-bottom: 30px;">
     <img
-      src=""
+      src="https://drive.google.com/file/d/1A3iEc0Y7bITc0GLznsleue910WTqek7C/view?usp=drivesdk"
       alt="ClipIQ Logo"
       width="48"
       height="48"
@@ -420,13 +419,16 @@ export const inviteMemberAction = async (
 `
           );
 
-          transporter.sendMail(mailOptions, (error: Error | null, info: nodemailer.SentMessageInfo) => {
-            if (error) {
-              console.log("🔴", error.message);
-            } else {
-              console.log("✅ Email Sent", info);
+          transporter.sendMail(
+            mailOptions,
+            (error: Error | null, info: nodemailer.SentMessageInfo) => {
+              if (error) {
+                console.log("🔴", error.message);
+              } else {
+                console.log("✅ Email Sent", info);
+              }
             }
-          });
+          );
           return { status: 200, data: "Invite sent" };
         }
         return { status: 400, data: "invitation failed" };
@@ -459,7 +461,7 @@ export const acceptInviteAction = async (inviteId: string) => {
         id: inviteId,
       },
       select: {
-        accepted:true,
+        accepted: true,
         recieverId: true,
         workSpaceId: true,
         WorkSpace: {
@@ -474,7 +476,8 @@ export const acceptInviteAction = async (inviteId: string) => {
       if (invite.recieverId !== recevier?.id)
         return { status: 401, data: "Not authorised to accept this invite" };
 
-      if(invite.accepted===true) return { status:402 , data:"Already a member"}
+      if (invite.accepted === true)
+        return { status: 402, data: "Already a member" };
 
       const membersTransaction = await client.$transaction([
         client.invite.update({
@@ -512,43 +515,43 @@ export const acceptInviteAction = async (inviteId: string) => {
             },
           },
         });
-        return { status: 200 , data:"Invitation Accepted" };
+        return { status: 200, data: "Invitation Accepted" };
       }
     }
-    return {status:400, data:"Invitation does not exist"}
+    return { status: 400, data: "Invitation does not exist" };
   } catch (error) {
-    return {status:500 , data:"Oops! Something went wrong"}
+    return { status: 500, data: "Oops! Something went wrong" };
   }
 };
 
 export const completeSubscription = async (session: string) => {
-    try {
-      const user = await currentUser()
-      if (!user) return { status: 404 }
-  
-      // const session = await stripe.checkout.sessions.retrieve(session_id)
-      // if (session) {
-        const customer = await client.user.update({
-          where: {
-            clerkid: user.id,
-          },
-          data: {
-            subscription: {
-              update: {
-                data: {
-                  customerId: session,
-                  plan: 'PRO',
-                },
-              },
+  try {
+    const user = await currentUser();
+    if (!user) return { status: 404 };
+
+    // const session = await stripe.checkout.sessions.retrieve(session_id)
+    // if (session) {
+    const customer = await client.user.update({
+      where: {
+        clerkid: user.id,
+      },
+      data: {
+        subscription: {
+          update: {
+            data: {
+              customerId: session,
+              plan: "PRO",
             },
           },
-        })
-        if (customer) {
-          return { status: 200 , data: "Subscription completed successfully" }
-        // }
-      }
-      return { status: 404 , data: "Subscription failed" }
-    } catch  {
-      return { status: 400 , data: "Oops! Something went wrong" }
+        },
+      },
+    });
+    if (customer) {
+      return { status: 200, data: "Subscription completed successfully" };
+      // }
     }
+    return { status: 404, data: "Subscription failed" };
+  } catch {
+    return { status: 400, data: "Oops! Something went wrong" };
   }
+};

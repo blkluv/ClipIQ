@@ -12,7 +12,7 @@ export default function RedirectNotice({ title,message, to, delay = 2000 }: {tit
     return () => clearTimeout(timer);
   }, [to, delay, router]);
   return (
-    <div className="h-screen container flex flex-col gap-y-4 justify-center items-center">
+    <div className="h-screen flex flex-col gap-y-4 justify-center items-center">
       <h2 className="text-6xl font-bold text-white">{title}</h2>
       <p>{message}</p>
     </div>
